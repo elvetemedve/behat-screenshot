@@ -1,0 +1,36 @@
+{
+    "name": "bex/behat-screenshot",
+    "type": "library",
+    "description": "Extension for behat to help debug failing scenarios",
+    "keywords": ["tdd","bdd","behat"],
+    "homepage": "https://github.com/elvetemedve/behat-screenshot",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tibor Kotosz",
+            "role": "Developer"
+        },
+        {
+            "name": "Geza Buza",
+            "email": "bghome@gmail.com",
+            "homepage": "https://twitter.com/medve540",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "^5.4",
+        "behat/behat" : "~3.0",
+        "behat/mink-extension" : "~2.0.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec" : "*"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "src"
+        }
+    }
+}

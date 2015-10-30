@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="bex.screenshot_extension.configuration_parameters" class="Bex\Behat\ScreenshotExtension\Config\Parameters" />
+
+        <service id="bex.screenshot_extension.output_printer" class="Behat\Testwork\Output\Printer\ConsoleOutputPrinter" />
+        <service id="bex.screenshot_extension.screenshot_taker" class="Bex\Behat\ScreenshotExtension\Selenium\ScreenshotTaker" public="false">
+            <argument type="service" id="bex.screenshot_extension.configuration_parameters" />
+            <argument type="service" id="mink" />
+            <argument type="service" id="bex.screenshot_extension.output_printer" />
+        </service>
+
+        <service id="bex.screenshot_extension.step_filename_generator" class="Bex\Behat\ScreenshotExtension\String\StepFilenameGenerator" public="false" />
+
+        <service id="bex.screenshot_extension.screenshot_listener" class="Bex\Behat\ScreenshotExtension\Listener\ScreenshotListener" public="false">
+            <argument type="service" id="bex.screenshot_extension.screenshot_taker" />
+            <argument type="service" id="bex.screenshot_extension.step_filename_generator" />
+        </service>
+    </services>
+</container>
