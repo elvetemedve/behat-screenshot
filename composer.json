@@ -20,10 +20,11 @@
     "require": {
         "php" : "^5.4",
         "behat/behat" : "~3.0",
-        "behat/mink-extension" : "~2.0.0"
+        "behat/mink-extension" : "~2.0.0",
+        "symfony/filesystem": "^2.7"
     },
     "require-dev": {
-        "phpspec/phpspec" : "*"
+        "phpspec/phpspec" : "^2.3.0"
     },
     "config": {
         "bin-dir": "bin"

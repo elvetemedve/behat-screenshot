@@ -1,11 +1,13 @@
 <?php
 
-namespace Bex\Behat\ScreenshotExtension\Selenium;
+namespace Bex\Behat\ScreenshotExtension\Mink;
 
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Mink;
 use Behat\Testwork\Output\Printer\OutputPrinter;
 use Bex\Behat\ScreenshotExtension\Config\Parameters;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * This class is responsible for taking screenshot by using the Mink session
@@ -24,18 +26,23 @@ class ScreenshotTaker
     /** @var OutputPrinter $output */
     private $output;
 
+    /** @var Filesystem $filesystem */
+    private $filesystem;
+
     /**
      * Constructor
      *
+     * @param Filesystem $filesystem
      * @param Parameters $parameters
      * @param Mink $mink
      * @param OutputPrinter $output
      */
-    public function __construct(Parameters $parameters, Mink $mink, OutputPrinter $output)
+    public function __construct(Filesystem $filesystem, Parameters $parameters, Mink $mink, OutputPrinter $output)
     {
         $this->mink = $mink;
         $this->parameters = $parameters;
         $this->output = $output;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -49,7 +56,7 @@ class ScreenshotTaker
     {
         $targetFile = $this->getTargetPath($fileName);
         $this->ensureDirectoryExists(dirname($targetFile));
-        file_put_contents($targetFile, $this->mink->getSession()->getScreenshot());
+        $this->filesystem->dumpFile($targetFile, $this->mink->getSession()->getScreenshot());
         $this->output->writeln('Screenshot has been taken. Open image at ' . $this->getImagePath($targetFile));
     }
 
@@ -60,7 +67,8 @@ class ScreenshotTaker
      */
     private function getTargetPath($fileName)
     {
-        return rtrim($this->parameters->getScreenshotDirectory(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileName;
+        $path = rtrim($this->parameters->getScreenshotDirectory(), DIRECTORY_SEPARATOR);
+        return empty($path) ? $fileName : $path . DIRECTORY_SEPARATOR . $fileName;
     }
 
     /**
@@ -70,10 +78,12 @@ class ScreenshotTaker
      */
     private function ensureDirectoryExists($directory)
     {
-        if (!is_dir($directory)) {
-            if (!mkdir($directory, 0770, true)) {
-                throw new \RuntimeException(sprintf('Cannot create screenshot directory "%s".', $directory));
+        try {
+            if (!$this->filesystem->exists($directory)) {
+                $this->filesystem->mkdir($directory, 0770);
             }
+        } catch (IOException $e) {
+            throw new \RuntimeException(sprintf('Cannot create screenshot directory "%s".', $directory));
         }
     }
 

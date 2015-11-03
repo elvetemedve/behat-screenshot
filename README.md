@@ -1,4 +1,4 @@
 TODO: 
-- phpspec
 - write proper readme file
-[- multistep screenshot]
+- use 3rd-party service to store images temporarily (candidates: http://uploadpie.com/)
+- multistep screenshot

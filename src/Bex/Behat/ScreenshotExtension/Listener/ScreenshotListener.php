@@ -4,7 +4,7 @@ namespace Bex\Behat\ScreenshotExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
 use Behat\Testwork\Tester\Result\TestResult;
-use Bex\Behat\ScreenshotExtension\Selenium\ScreenshotTaker;
+use Bex\Behat\ScreenshotExtension\Mink\ScreenshotTaker;
 use Bex\Behat\ScreenshotExtension\String\StepFilenameGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

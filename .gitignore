@@ -1,0 +1,5 @@
+# Composer packages directory
+/vendor
+
+# Composer executable files directory
+/bin
