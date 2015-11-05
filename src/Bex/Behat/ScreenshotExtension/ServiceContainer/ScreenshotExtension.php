@@ -36,6 +36,7 @@ final class ScreenshotExtension implements Extension
      */
     public function process(ContainerBuilder $container)
     {
+
     }
 
     /**
@@ -69,8 +70,11 @@ final class ScreenshotExtension implements Extension
         $config = array_merge($config, ['base_url' => $container->getParameter('mink.base_url')]);
         $container->set('bex.screenshot_extension.configuration_parameters', new Parameters($config));
 
+        /*$imageDriverDefinition = $container->getDefinition('bex.screenshot_extension.image_driver.' . $config['image_driver']);
+        $container->setDefinition('bex.screenshot_extension.image_driver', $imageDriverDefinition);*/
+
         // Register event listener
-        $definition = $container->getDefinition('bex.screenshot_extension.screenshot_listener');
-        $definition->addTag(EventDispatcherExtension::SUBSCRIBER_TAG, ['priority' => 0]);
+        /*$definition = $container->getDefinition('bex.screenshot_extension.screenshot_listener');
+        $definition->addTag(EventDispatcherExtension::SUBSCRIBER_TAG, ['priority' => 0]);*/
     }
 }

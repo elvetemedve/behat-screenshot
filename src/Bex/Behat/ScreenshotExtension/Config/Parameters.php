@@ -14,8 +14,8 @@ class Parameters
     /** @var string $screenshotDirectory */
     private $screenshotDirectory;
 
-    /** @var string $screenshotDirectoryPathOnHttp */
-    private $screenshotDirectoryPathOnHttp;
+    /** @var boolean $isImageUploadEnabled */
+    private $isImageUploadEnabled;
 
     /** @var string $baseUrl */
     private $baseUrl;
@@ -28,7 +28,7 @@ class Parameters
     public function __construct(array $config)
     {
         $this->screenshotDirectory = $config['screenshot_directory'];
-        $this->screenshotDirectoryPathOnHttp = $config['screenshot_directory_path_on_http'];
+        $this->isImageUploadEnabled = $config['enable_image_upload'];
         $this->baseUrl = $config['base_url'];
     }
 
@@ -41,7 +41,8 @@ class Parameters
     {
         $builder->children()
             ->scalarNode('screenshot_directory')->defaultValue(sys_get_temp_dir())->end()
-            ->scalarNode('screenshot_directory_path_on_http')->defaultValue('')->end()
+            ->scalarNode('enable_image_upload')->defaultValue(false)->end()
+            ->scalarNode('image_driver')->defaultValue('uploadpie')->end()
             ->end();
     }
 
@@ -56,13 +57,13 @@ class Parameters
     }
 
     /**
-     * Returns the URL path to the screenshot directory in which it is accessible on HTTP
-     *
-     * @return string
+     * Tells whether the image driver should be used
+     * 
+     * @return boolean
      */
-    public function getScreenshotDirectoryPathOnHttp()
+    public function isImageUploadEnabled()
     {
-        return $this->screenshotDirectoryPathOnHttp;
+        return $this->isImageUploadEnabled;
     }
 
     /**

@@ -6,6 +6,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Mink;
 use Behat\Testwork\Output\Printer\OutputPrinter;
 use Bex\Behat\ScreenshotExtension\Config\Parameters;
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriver;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -29,6 +30,9 @@ class ScreenshotTaker
     /** @var Filesystem $filesystem */
     private $filesystem;
 
+    /** @var ImageDriver $imageDriver */
+    private $imageDriver;
+
     /**
      * Constructor
      *
@@ -43,6 +47,7 @@ class ScreenshotTaker
         $this->parameters = $parameters;
         $this->output = $output;
         $this->filesystem = $filesystem;
+        //$this->imageDriver = $imageDriver;
     }
 
     /**
@@ -57,7 +62,11 @@ class ScreenshotTaker
         $targetFile = $this->getTargetPath($fileName);
         $this->ensureDirectoryExists(dirname($targetFile));
         $this->filesystem->dumpFile($targetFile, $this->mink->getSession()->getScreenshot());
-        $this->output->writeln('Screenshot has been taken. Open image at ' . $this->getImagePath($targetFile));
+        if ($this->parameters->isImageUploadEnabled()) {
+            $imageUrl = $this->imageDriver->upload($targetFile);
+            $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
+        }
+        $this->output->writeln('Screenshot has been taken. Open image at ' . $targetFile);
     }
 
     /**
