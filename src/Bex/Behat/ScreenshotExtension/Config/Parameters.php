@@ -3,6 +3,7 @@
 namespace Bex\Behat\ScreenshotExtension\Config;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 /**
  * This class represents the configurable parameters of the Behat extension
@@ -11,14 +12,11 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
  */
 class Parameters
 {
-    /** @var string $screenshotDirectory */
-    private $screenshotDirectory;
+    /** @var string $activeImageDriver */
+    private $activeImageDriver;
 
-    /** @var boolean $isImageUploadEnabled */
-    private $isImageUploadEnabled;
-
-    /** @var string $baseUrl */
-    private $baseUrl;
+    /** @var array */
+    private $imageDriver;
 
     /**
      * Constructor
@@ -27,52 +25,56 @@ class Parameters
      */
     public function __construct(array $config)
     {
-        $this->screenshotDirectory = $config['screenshot_directory'];
-        $this->isImageUploadEnabled = $config['enable_image_upload'];
-        $this->baseUrl = $config['base_url'];
+        var_dump($config); exit;
+        $this->activeImageDriver = $config['active_image_driver'];
+        $this->imageDriver['local'] = $config['image_driver']['local'];
     }
 
     /**
      * Defines the list of parameters in behat.yml parameters allowed by this extension
      *
      * @param ArrayNodeDefinition $builder
+     *
+     * @return NodeDefinition
      */
     public static function configure(ArrayNodeDefinition $builder)
     {
+        $tempDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-screenshot';
+
         $builder->children()
-            ->scalarNode('screenshot_directory')->defaultValue(sys_get_temp_dir())->end()
-            ->scalarNode('enable_image_upload')->defaultValue(false)->end()
-            ->scalarNode('image_driver')->defaultValue('uploadpie')->end()
-            ->end();
+            ->scalarNode('active_image_driver')->defaultValue('local')->end()
+            ->arrayNode('image_driver')
+                ->prototype('array')
+                    ->children()
+                        ->arrayNode('local')
+                            ->children()
+                                ->scalarNode('screenshot_directory')->defaultValue($tempDirectory)->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->children()
+                        ->arrayNode('upload_pie')
+                            ->children()
+                                ->scalarNode('expire')->defaultValue(30)->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 
     /**
-     * Returns the location of the screenshot directory in the local filesystem
      *
      * @return mixed
      */
+    public function getActiveImageDriver()
+    {
+        return 'bex.screenshot_extension.image_driver.' . $this->activeImageDriver;
+    }
+
     public function getScreenshotDirectory()
     {
-        return $this->screenshotDirectory;
-    }
-
-    /**
-     * Tells whether the image driver should be used
-     * 
-     * @return boolean
-     */
-    public function isImageUploadEnabled()
-    {
-        return $this->isImageUploadEnabled;
-    }
-
-    /**
-     * Returns the base URL used by the Mink extension
-     *
-     * @return string
-     */
-    public function getBaseUrl()
-    {
-        return $this->baseUrl;
+        return $this->imageDriver['local']['screenshot_directory'];
     }
 }

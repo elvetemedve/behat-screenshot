@@ -40,7 +40,7 @@ class ScreenshotTakerSpec extends ObjectBehavior
 
     function it_saves_screenshot_into_the_configured_directory(Filesystem $filesystem, Parameters $parameters)
     {
-        $parameters->getScreenshotDirectory()->willReturn('/foo/bar/');
+        $parameters->getActiveImageDriver()->willReturn('/foo/bar/');
         $filesystem->dumpFile('/foo/bar/test.jpg', Argument::any())->shouldBeCalled();
 
         $this->takeScreenshot('test.jpg');
@@ -48,7 +48,7 @@ class ScreenshotTakerSpec extends ObjectBehavior
 
     function it_creates_non_existent_directories(Filesystem $filesystem, Parameters $parameters)
     {
-        $parameters->getScreenshotDirectory()->willReturn('/foo/bar/baz/');
+        $parameters->getActiveImageDriver()->willReturn('/foo/bar/baz/');
         $filesystem->exists('/foo/bar/baz')->willReturn(false);
         $filesystem->mkdir('/foo/bar/baz', Argument::any())->shouldBeCalled();
 
@@ -77,7 +77,7 @@ class ScreenshotTakerSpec extends ObjectBehavior
 
     private function initParametersDouble(Parameters $parameters)
     {
-        $parameters->getScreenshotDirectory()->willReturn('/tmp');
+        $parameters->getActiveImageDriver()->willReturn('/tmp');
         $parameters->getScreenshotDirectoryPathOnHttp()->willReturn('');
     }
 }

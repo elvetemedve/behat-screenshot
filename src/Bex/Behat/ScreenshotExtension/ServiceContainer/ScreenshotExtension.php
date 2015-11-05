@@ -6,6 +6,7 @@ use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
 use Behat\Testwork\ServiceContainer\Extension;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Bex\Behat\ScreenshotExtension\Config\Parameters;
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriver;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -20,7 +21,6 @@ use Symfony\Component\Config\FileLocator;
  */
 final class ScreenshotExtension implements Extension
 {
-
     /**
      * Returns the extension config key.
      *
@@ -44,6 +44,7 @@ final class ScreenshotExtension implements Extension
      */
     public function initialize(ExtensionManager $extensionManager)
     {
+
     }
 
     /**
@@ -67,14 +68,10 @@ final class ScreenshotExtension implements Extension
         $loader->load('services.xml');
 
         // Register configuration parameters service
-        $config = array_merge($config, ['base_url' => $container->getParameter('mink.base_url')]);
-        $container->set('bex.screenshot_extension.configuration_parameters', new Parameters($config));
+        $parameters = new Parameters($config);
+        $container->set('bex.screenshot_extension.configuration_parameters', $parameters);
 
-        /*$imageDriverDefinition = $container->getDefinition('bex.screenshot_extension.image_driver.' . $config['image_driver']);
-        $container->setDefinition('bex.screenshot_extension.image_driver', $imageDriverDefinition);*/
-
-        // Register event listener
-        /*$definition = $container->getDefinition('bex.screenshot_extension.screenshot_listener');
-        $definition->addTag(EventDispatcherExtension::SUBSCRIBER_TAG, ['priority' => 0]);*/
+        $imageDriverDefinition = $container->getDefinition($parameters->getActiveImageDriver());
+        $container->setDefinition('bex.screenshot_extension.image_driver', $imageDriverDefinition);
     }
 }
