@@ -72,6 +72,6 @@ final class ScreenshotExtension implements Extension
         $container->set('bex.screenshot_extension.configuration_parameters', $parameters);
 
         $imageDriverDefinition = $container->getDefinition($parameters->getActiveImageDriver());
-        $container->setDefinition('bex.screenshot_extension.image_driver', $imageDriverDefinition);
+        $container->setDefinition('bex.screenshot_extension.image_driver.current', $imageDriverDefinition);
     }
 }

@@ -25,9 +25,10 @@ class Parameters
      */
     public function __construct(array $config)
     {
-        var_dump($config); exit;
+        //var_dump($config); exit;
         $this->activeImageDriver = $config['active_image_driver'];
         $this->imageDriver['local'] = $config['image_driver']['local'];
+        $this->imageDriver['upload_pie'] = $config['image_driver']['upload_pie'];
     }
 
     /**
@@ -41,21 +42,28 @@ class Parameters
     {
         $tempDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-screenshot';
 
-        $builder->children()
-            ->scalarNode('active_image_driver')->defaultValue('local')->end()
+        $rootNode = $builder->children();
+        $rootNode
+            ->scalarNode('active_image_driver')
+                ->defaultValue('local')
+                ->validate()
+                    ->ifNotInArray(array('local', 'upload_pie'))
+                    ->thenInvalid('Invalid image driver "%s"')
+                ->end()
+            ->end()
             ->arrayNode('image_driver')
-                ->prototype('array')
-                    ->children()
-                        ->arrayNode('local')
-                            ->children()
-                                ->scalarNode('screenshot_directory')->defaultValue($tempDirectory)->end()
+                ->children()
+                    ->arrayNode('local')
+                        ->children()
+                            ->scalarNode('screenshot_directory')
+                                ->defaultValue($tempDirectory)
                             ->end()
                         ->end()
                     ->end()
-                    ->children()
-                        ->arrayNode('upload_pie')
-                            ->children()
-                                ->scalarNode('expire')->defaultValue(30)->end()
+                    ->arrayNode('upload_pie')
+                        ->children()
+                            ->scalarNode('expire')
+                                ->defaultValue(30)
                             ->end()
                         ->end()
                     ->end()
@@ -73,8 +81,19 @@ class Parameters
         return 'bex.screenshot_extension.image_driver.' . $this->activeImageDriver;
     }
 
+    /**
+     * @return string
+     */
     public function getScreenshotDirectory()
     {
         return $this->imageDriver['local']['screenshot_directory'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpiryDate()
+    {
+        return $this->imageDriver['upload_pie']['expire'];
     }
 }

@@ -2,29 +2,61 @@
 
 namespace Bex\Behat\ScreenshotExtension\Driver;
 
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Bex\Behat\ScreenshotExtension\Config\Parameters;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 class UploadPie implements ImageDriver
 {
+    /**
+     * @var Parameters
+     */
+    private $parameters;
 
     /**
-     * @param  NodeDefinition $builder
-     *
-     * @return void
+     * @param Parameters $parameters
      */
-    public static function configure(NodeDefinition $builder)
+    public function __construct(Parameters $parameters)
     {
-        echo 'configure '. __CLASS__;exit;
-        // TODO: Implement configure() method.
+        $this->parameters = $parameters;
     }
 
     /**
-     * @param  string $filePath
+     * @param string $binaryImage Content
+     * @param string $filename
      *
-     * @return string Image url
+     * @return string URL to the image
      */
-    public function upload($filePath)
+    public function upload($binaryImage, $filename)
     {
-        // TODO: Implement upload() method.
+        $tmpFile = "/tmp/$filename";
+        file_put_contents($tmpFile, $binaryImage);
+
+        $url = 'http://uploadpie.com/';
+        $data = [
+            'uploadedfile' => new \CURLFile($tmpFile),
+            'expire' => $this->parameters->getExpiryDate(),
+            'upload' => 1
+        ];
+
+        $ch = curl_init();  
+             
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);    
+
+        $output = curl_exec($ch);
+
+        curl_close($ch);
+
+        preg_match('/<input.*value="(.*)"/U', $output, $matches);
+
+        if (isset($matches[1])) {
+            unlink($tmpFile);
+            return $matches[1];
+        }
+        
+        return $tmpFile;
     }
 }

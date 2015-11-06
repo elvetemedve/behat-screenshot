@@ -8,19 +8,22 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Local implements ImageDriver
 {
-
     /**
      * @var Filesystem
      */
     private $filesystem;
+
     /**
      * @var Parameters
      */
     private $parameters;
 
+    /**
+     * @param Filesystem $filesystem
+     * @param Parameters $parameters
+     */
     public function __construct(Filesystem $filesystem, Parameters $parameters)
     {
-
         $this->filesystem = $filesystem;
         $this->parameters = $parameters;
     }
