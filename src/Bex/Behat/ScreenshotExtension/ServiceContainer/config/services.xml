@@ -38,5 +38,10 @@
             <argument type="service" id="bex.screenshot_extension.curl_client" />
             <argument type="service" id="bex.screenshot_extension.configuration_parameters" />
         </service>
+
+        <service id="bex.screenshot_extension.image_driver.img42" class="Bex\Behat\ScreenshotExtension\Driver\Img42">
+            <argument type="service" id="bex.screenshot_extension.curl_client" />
+            <argument type="service" id="bex.screenshot_extension.configuration_parameters" />
+        </service>
     </services>
 </container>

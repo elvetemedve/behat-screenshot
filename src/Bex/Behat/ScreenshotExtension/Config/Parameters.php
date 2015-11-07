@@ -48,7 +48,7 @@ class Parameters
             ->scalarNode('active_image_driver')
                 ->defaultValue('local')
                 ->validate()
-                    ->ifNotInArray(array('local', 'upload_pie', 'unsee'))
+                    ->ifNotInArray(array('local', 'upload_pie', 'unsee', 'img42'))
                     ->thenInvalid('Invalid image driver "%s"')
                 ->end()
             ->end()
