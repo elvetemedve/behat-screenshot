@@ -7,9 +7,13 @@ use Buzz\Client\Curl;
 use Buzz\Message\Form\FormRequest;
 use Buzz\Message\Form\FormUpload;
 use Buzz\Message\Response;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class UploadPie implements ImageDriver
+class UploadPie extends ImageDriver
 {
+    const CONFIG_PARAM_EXPIRE = 'expire';
+
     const REQUEST_URL = 'http://uploadpie.com/';
 
     /**
@@ -18,18 +22,38 @@ class UploadPie implements ImageDriver
     private $client;
 
     /**
-     * @var Parameters
+     * @var string
      */
-    private $parameters;
+    private $expire;
 
     /**
      * @param Curl       $client
      * @param Parameters $parameters
      */
-    public function __construct(Curl $client, Parameters $parameters)
+    public function __construct(Curl $client = null)
     {
-        $this->client = $client;
-        $this->parameters = $parameters;
+        $this->client = $client ?: new Curl();
+    }
+
+    /**
+     * @param  ArrayNodeDefinition $builder
+     */
+    public function configure(ArrayNodeDefinition $builder)
+    {
+        $builder
+            ->children()
+                ->scalarNode(self::CONFIG_PARAM_EXPIRE)
+                ->defaultValue(30)
+            ->end();
+    }
+
+    /**
+     * @param  ContainerBuilder $container
+     * @param  array            $config
+     */
+    public function load(ContainerBuilder $container, array $config)
+    {
+        $this->expire = $config[self::CONFIG_PARAM_EXPIRE];
     }
 
     /**
@@ -57,7 +81,7 @@ class UploadPie implements ImageDriver
         $image = new FormUpload();
         $image->setFilename($filename);
         $image->setContent($binaryImage);
-        $expire = 1; //$this->parameters->getExpiryDate(); // TODO expire value should be between 1 and 5
+        $expire = 1; // TODO expire value should be between 1 and 5
 
         $request = $this->buildRequest($image, $expire);
         $this->client->send($request, $response);

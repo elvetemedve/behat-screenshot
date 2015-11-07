@@ -7,6 +7,7 @@ use Behat\Testwork\Tester\Result\TestResult;
 use Bex\Behat\ScreenshotExtension\Mink\ScreenshotTaker;
 use Bex\Behat\ScreenshotExtension\String\StepFilenameGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Behat\Behat\EventDispatcher\Event\StepTested;
 
 /**
  * This class is responsible to decide when to make a screenshot
@@ -38,9 +39,7 @@ final class ScreenshotListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [
-            'tester.step_tested.after' => ['checkAfterStep']
-        ];
+        return [StepTested::AFTER => 'checkAfterStep'];
     }
 
     /**

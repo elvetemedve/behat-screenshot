@@ -4,10 +4,8 @@ namespace Bex\Behat\ScreenshotExtension\Mink;
 
 use Behat\Mink\Mink;
 use Behat\Testwork\Output\Printer\OutputPrinter;
-use Bex\Behat\ScreenshotExtension\Config\Parameters;
-use Bex\Behat\ScreenshotExtension\Driver\ImageDriver;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Driver\Container as ImageDriverContainer;
 
 /**
  * This class is responsible for taking screenshot by using the Mink session
@@ -16,28 +14,27 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class ScreenshotTaker
 {
-
     /** @var Mink $mink */
     private $mink;
 
     /** @var OutputPrinter $output */
     private $output;
 
-    /** @var ImageDriver $imageDriver */
-    private $imageDriver;
+    /** @var ImageDriverContainer $driverContainer */
+    private $driverContainer;
 
     /**
      * Constructor
      *
      * @param Mink $mink
      * @param OutputPrinter $output
-     * @param ImageDriver $imageDriver
+     * @param ImageDriverContainer $driverContainer
      */
-    public function __construct(Mink $mink, OutputPrinter $output, ImageDriver $imageDriver)
+    public function __construct(Mink $mink, OutputPrinter $output, ImageDriverContainer $driverContainer)
     {
         $this->mink = $mink;
         $this->output = $output;
-        $this->imageDriver = $imageDriver;
+        $this->driverContainer = $driverContainer;
     }
 
     /**
@@ -47,8 +44,11 @@ class ScreenshotTaker
      */
     public function takeScreenshot($fileName = 'failure.png')
     {
-        $imageUrl = $this->imageDriver->upload($this->mink->getSession()->getScreenshot(), $fileName);
+        $screenshot = $this->mink->getSession()->getScreenshot();
 
-        $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
+        foreach ($this->driverContainer->getActiveDrivers() as $imageDriver) {
+            $imageUrl = $imageDriver->upload($screenshot, $fileName);
+            $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
+        }
     }
 }

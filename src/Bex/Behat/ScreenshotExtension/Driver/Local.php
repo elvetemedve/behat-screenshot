@@ -3,29 +3,53 @@
 namespace Bex\Behat\ScreenshotExtension\Driver;
 
 use Bex\Behat\ScreenshotExtension\Config\Parameters;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Local implements ImageDriver
+class Local extends ImageDriver
 {
+    const DEFAULT_DIRECTORY = 'behat-screenshot';
+    const CONFIG_PARAM_SCREENSHOT_DIRECTORY = 'screenshot_directory';
+
     /**
      * @var Filesystem
      */
     private $filesystem;
 
     /**
-     * @var Parameters
+     * @var string
      */
-    private $parameters;
+    private $screenshotDirectory;
 
     /**
      * @param Filesystem $filesystem
-     * @param Parameters $parameters
      */
-    public function __construct(Filesystem $filesystem, Parameters $parameters)
+    public function __construct(Filesystem $filesystem = null)
     {
-        $this->filesystem = $filesystem;
-        $this->parameters = $parameters;
+        $this->filesystem = $filesystem ?: new Filesystem();
+    }
+
+    /**
+     * @param  ArrayNodeDefinition $builder
+     */
+    public function configure(ArrayNodeDefinition $builder)
+    {
+        $builder
+            ->children()
+                ->scalarNode(self::CONFIG_PARAM_SCREENSHOT_DIRECTORY)
+                ->defaultValue($this->getDefaultDirectory())
+            ->end();
+    }
+
+    /**
+     * @param  ContainerBuilder $container
+     * @param  array            $config
+     */
+    public function load(ContainerBuilder $container, array $config)
+    {
+        $this->screenshotDirectory = $config[self::CONFIG_PARAM_SCREENSHOT_DIRECTORY];
     }
 
     /**
@@ -44,20 +68,28 @@ class Local implements ImageDriver
     }
 
     /**
+     * @return string
+     */
+    private function getDefaultDirectory()
+    {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_DIRECTORY;
+    }
+
+    /**
      * @param string $fileName
      *
      * @return string
      */
     private function getTargetPath($fileName)
     {
-        $path = rtrim($this->parameters->getScreenshotDirectory(), DIRECTORY_SEPARATOR);
+        $path = rtrim($this->screenshotDirectory, DIRECTORY_SEPARATOR);
         return empty($path) ? $fileName : $path . DIRECTORY_SEPARATOR . $fileName;
     }
 
     /**
      * @param string $directory
      *
-     * @throws \RuntimeException
+     * @throws IOException
      */
     private function ensureDirectoryExists($directory)
     {

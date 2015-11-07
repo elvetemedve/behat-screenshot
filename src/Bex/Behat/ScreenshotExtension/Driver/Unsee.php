@@ -7,9 +7,13 @@ use Buzz\Client\Curl;
 use Buzz\Message\Form\FormRequest;
 use Buzz\Message\Form\FormUpload;
 use Buzz\Message\Response;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class Unsee implements ImageDriver
+class Unsee extends ImageDriver
 {
+    const CONFIG_PARAM_EXPIRE = 'expire';
+
     const REQUEST_URL = 'https://unsee.cc/upload/';
     const IMAGE_BASE_URL= 'https://unsee.cc/';
 
@@ -19,18 +23,37 @@ class Unsee implements ImageDriver
     private $client;
 
     /**
-     * @var Parameters
+     * @var string
      */
-    private $parameters;
+    private $expire;
 
     /**
      * @param Curl       $client
-     * @param Parameters $parameters
      */
-    public function __construct(Curl $client, Parameters $parameters)
+    public function __construct(Curl $client = null)
     {
-        $this->client = $client;
-        $this->parameters = $parameters;
+        $this->client = $client ?: new Curl();
+    }
+
+    /**
+     * @param  ArrayNodeDefinition $builder
+     */
+    public function configure(ArrayNodeDefinition $builder)
+    {
+        $builder
+            ->children()
+                ->scalarNode(self::CONFIG_PARAM_EXPIRE)
+                ->defaultValue(600)
+            ->end();
+    }
+
+    /**
+     * @param  ContainerBuilder $container
+     * @param  array            $config
+     */
+    public function load(ContainerBuilder $container, array $config)
+    {
+        $this->expire = $config[self::CONFIG_PARAM_EXPIRE];
     }
 
     /**

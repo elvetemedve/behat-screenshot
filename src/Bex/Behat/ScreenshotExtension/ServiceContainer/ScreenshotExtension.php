@@ -8,9 +8,12 @@ use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Bex\Behat\ScreenshotExtension\Config\Parameters;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriver;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Config\FileLocator;
 
 /**
  * This class is the entry point of the screenshot extension
@@ -48,11 +51,29 @@ final class ScreenshotExtension implements Extension
     }
 
     /**
-     * {@inheritdoc}
+     * @param  ArrayNodeDefinition $builder
      */
     public function configure(ArrayNodeDefinition $builder)
     {
-        Parameters::configure($builder);
+        $builder
+            ->children()
+                ->arrayNode('active_image_drivers')
+                    ->defaultValue(['local'])
+                    ->beforeNormalization()
+                        ->ifString()
+                        ->then(function($value) { return array($value); } )
+                    ->end()
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+            ->fixXmlConfig('image_driver')
+            ->children()
+                ->arrayNode('image_drivers')
+                    ->prototype('array')
+                        ->prototype('scalar')->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     /**
@@ -63,15 +84,11 @@ final class ScreenshotExtension implements Extension
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        // Load dependency injection container from XML
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/config'));
         $loader->load('services.xml');
 
-        // Register configuration parameters service
-        $parameters = new Parameters($config);
-        $container->set('bex.screenshot_extension.configuration_parameters', $parameters);
-
-        $imageDriverDefinition = $container->getDefinition($parameters->getActiveImageDriver());
-        $container->setDefinition('bex.screenshot_extension.image_driver.current', $imageDriverDefinition);
+        $driverContainer = $container->get('bex.screenshot_extension.image_driver_container');
+        $driverContainer->loadDrivers($container, $config['active_image_drivers'], $config['image_drivers']);
+        $container->set('bex.screenshot_extension.image_driver_container', $driverContainer);
     }
 }

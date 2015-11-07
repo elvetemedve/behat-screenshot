@@ -10,11 +10,10 @@ use Buzz\Message\Request;
 use Buzz\Message\RequestInterface;
 use Buzz\Message\Response;
 use Buzz\Util\Url;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * All uploaded image will live for 10 minutes
- */
-class Img42 implements ImageDriver
+class Img42 extends ImageDriver
 {
     const REQUEST_URL = 'https://img42.com';
     const IMAGE_BASE_URL= 'https://img42.com/';
@@ -25,19 +24,32 @@ class Img42 implements ImageDriver
     private $client;
 
     /**
-     * @var Parameters
+     * @param Curl       $client
      */
-    private $parameters;
+    public function __construct(Curl $client = null)
+    {
+        $this->client = $client ?: new Curl();
+    }
 
     /**
-     * @param Curl       $client
-     * @param Parameters $parameters
+     * @param  ArrayNodeDefinition $builder
      */
-    public function __construct(Curl $client, Parameters $parameters)
+    public function configure(ArrayNodeDefinition $builder)
     {
-        $this->client = $client;
-        $this->parameters = $parameters;
+        // no additional configuration required
+        // all uploaded image will live for 10 minutes
+        // it can't be configured during the image upload
     }
+
+    /**
+     * @param  ContainerBuilder $container
+     * @param  array            $config
+     */
+    public function load(ContainerBuilder $container, array $config)
+    {
+        // there isn't any configuration for this image upload driver
+    }
+
 
     /**
      * @param string $binaryImage
