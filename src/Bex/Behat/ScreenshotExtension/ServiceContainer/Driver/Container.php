@@ -66,7 +66,6 @@ class Container
         // this will always work if the driver is under this namespace:
         $namespace = 'Bex\\Behat\\ScreenshotExtension\\Driver';
         foreach ($driverKeys as $driverKey) {
-            echo $driverKey . PHP_EOL;
             $driverClass = $namespace . '\\' . ucfirst(DIContainer::camelize($driverKey));
             if (class_exists($driverClass)) {
                 $drivers[$driverKey] = new $driverClass();
