@@ -29,7 +29,7 @@ class Local implements ImageDriver
     }
 
     /**
-     * @param string $binaryImage Content
+     * @param string $binaryImage
      * @param string $filename
      *
      * @return string URL to the image

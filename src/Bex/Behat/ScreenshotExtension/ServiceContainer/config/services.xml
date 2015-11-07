@@ -7,6 +7,8 @@
 
         <service id="bex.screenshot_extension.filesystem" class="Symfony\Component\Filesystem\Filesystem" />
         <service id="bex.screenshot_extension.output_printer" class="Behat\Testwork\Output\Printer\ConsoleOutputPrinter" />
+        <service id="bex.screenshot_extension.curl_client" class="Buzz\Client\Curl" />
+        
         <service id="bex.screenshot_extension.screenshot_taker" class="Bex\Behat\ScreenshotExtension\Mink\ScreenshotTaker" public="false">
             <argument type="service" id="mink" />
             <argument type="service" id="bex.screenshot_extension.output_printer" />
@@ -24,11 +26,12 @@
         <!-- image drivers -->
         <service id="bex.screenshot_extension.image_driver.local" class="Bex\Behat\ScreenshotExtension\Driver\Local">
             <argument type="service" id="bex.screenshot_extension.filesystem" />
-            <argument  type="service" id="bex.screenshot_extension.configuration_parameters" />
+            <argument type="service" id="bex.screenshot_extension.configuration_parameters" />
         </service>
 
         <service id="bex.screenshot_extension.image_driver.upload_pie" class="Bex\Behat\ScreenshotExtension\Driver\UploadPie">
-            <argument  type="service" id="bex.screenshot_extension.configuration_parameters" />
+            <argument type="service" id="bex.screenshot_extension.curl_client" />
+            <argument type="service" id="bex.screenshot_extension.configuration_parameters" />
         </service>
     </services>
 </container>

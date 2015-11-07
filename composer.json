@@ -8,6 +8,8 @@
     "authors": [
         {
             "name": "Tibor Kotosz",
+            "email": "kotosy@gmail.com",
+            "homepage": "https://github.com/tkotosz",
             "role": "Developer"
         },
         {
@@ -21,7 +23,8 @@
         "php" : "^5.4",
         "behat/behat" : "^3.0.0",
         "behat/mink-extension" : "^2.0.0",
-        "symfony/filesystem": "^2.7"
+        "symfony/filesystem": "^2.7",
+        "kriswallsmith/buzz": "^0.15.0"
     },
     "require-dev": {
         "phpspec/phpspec" : "^2.3.0"

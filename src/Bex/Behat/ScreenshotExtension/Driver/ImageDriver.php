@@ -5,7 +5,7 @@ namespace Bex\Behat\ScreenshotExtension\Driver;
 interface ImageDriver
 {
     /**
-     * @param string $binaryImage Content
+     * @param string $binaryImage
      * @param string $filename
      *
      * @return string URL to the image
