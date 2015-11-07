@@ -8,9 +8,10 @@ use Buzz\Message\Form\FormRequest;
 use Buzz\Message\Form\FormUpload;
 use Buzz\Message\Response;
 
-class UploadPie implements ImageDriver
+class Unsee implements ImageDriver
 {
-    const REQUEST_URL = 'http://uploadpie.com/';
+    const REQUEST_URL = 'https://unsee.cc/upload/';
+    const IMAGE_BASE_URL= 'https://unsee.cc/';
 
     /**
      * @var Curl
@@ -57,7 +58,7 @@ class UploadPie implements ImageDriver
         $image = new FormUpload();
         $image->setFilename($filename);
         $image->setContent($binaryImage);
-        $expire = 1; //$this->parameters->getExpiryDate(); // TODO expire value should be between 1 and 5
+        $expire = 600; //TODO get expire time from config (possible values: 0 , 600, 1800, 3600)
 
         $request = $this->buildRequest($image, $expire);
         $this->client->send($request, $response);
@@ -72,15 +73,13 @@ class UploadPie implements ImageDriver
      */
     private function processResponse(Response $response)
     {
-        $matches = [];
+        $responseData = json_decode($response->getContent(), true);
 
-        preg_match('/<input.*value="(.*)"/U', $response->getContent(), $matches);
-
-        if (!isset($matches[1])) {
+        if (!isset($responseData['hash'])) {
             throw new \RuntimeException('Screenshot upload failed');
         }
 
-        return $matches[1];
+        return self::IMAGE_BASE_URL . $responseData['hash'];
     }
 
     /**
@@ -94,9 +93,8 @@ class UploadPie implements ImageDriver
         $request = new FormRequest();
         
         $request->fromUrl(self::REQUEST_URL);
-        $request->setField('uploadedfile', $image);
-        $request->setField('expire', $expire);
-        $request->setField('upload', 1);
+        $request->setField('image', $image);
+        $request->setField('time', $expire);
 
         return $request;
     }

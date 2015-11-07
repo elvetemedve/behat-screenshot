@@ -29,6 +29,7 @@ class Parameters
         $this->activeImageDriver = $config['active_image_driver'];
         $this->imageDriver['local'] = $config['image_driver']['local'];
         $this->imageDriver['upload_pie'] = $config['image_driver']['upload_pie'];
+        $this->imageDriver['unsee'] = $config['image_driver']['unsee'];
     }
 
     /**
@@ -47,7 +48,7 @@ class Parameters
             ->scalarNode('active_image_driver')
                 ->defaultValue('local')
                 ->validate()
-                    ->ifNotInArray(array('local', 'upload_pie'))
+                    ->ifNotInArray(array('local', 'upload_pie', 'unsee'))
                     ->thenInvalid('Invalid image driver "%s"')
                 ->end()
             ->end()
@@ -61,6 +62,13 @@ class Parameters
                         ->end()
                     ->end()
                     ->arrayNode('upload_pie')
+                        ->children()
+                            ->scalarNode('expire')
+                                ->defaultValue(30)
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('unsee')
                         ->children()
                             ->scalarNode('expire')
                                 ->defaultValue(30)

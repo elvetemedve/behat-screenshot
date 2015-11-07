@@ -33,5 +33,10 @@
             <argument type="service" id="bex.screenshot_extension.curl_client" />
             <argument type="service" id="bex.screenshot_extension.configuration_parameters" />
         </service>
+
+        <service id="bex.screenshot_extension.image_driver.unsee" class="Bex\Behat\ScreenshotExtension\Driver\Unsee">
+            <argument type="service" id="bex.screenshot_extension.curl_client" />
+            <argument type="service" id="bex.screenshot_extension.configuration_parameters" />
+        </service>
     </services>
 </container>
