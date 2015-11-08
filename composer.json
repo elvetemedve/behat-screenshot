@@ -33,6 +33,24 @@
     "require-dev": {
         "phpspec/phpspec" : "^2.3.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:tkotosz/behat-extension-driver-locator.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:tkotosz/behat-screenshot-image-driver-uploadpie.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:tkotosz/behat-screenshot-image-driver-img42.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:tkotosz/behat-screenshot-image-driver-unsee.git"
+        }
+    ],
     "config": {
         "bin-dir": "bin"
     },
