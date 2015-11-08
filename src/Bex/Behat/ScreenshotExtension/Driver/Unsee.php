@@ -43,7 +43,8 @@ class Unsee extends ImageDriver
         $builder
             ->children()
                 ->scalarNode(self::CONFIG_PARAM_EXPIRE)
-                ->defaultValue(600)
+                    ->defaultValue(600)
+                ->end()
             ->end();
     }
 

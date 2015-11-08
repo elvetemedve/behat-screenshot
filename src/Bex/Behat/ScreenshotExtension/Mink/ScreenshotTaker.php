@@ -4,8 +4,8 @@ namespace Bex\Behat\ScreenshotExtension\Mink;
 
 use Behat\Mink\Mink;
 use Behat\Testwork\Output\Printer\OutputPrinter;
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriver;
 use Symfony\Component\Filesystem\Filesystem;
-use Bex\Behat\ScreenshotExtension\ServiceContainer\Driver\Container as ImageDriverContainer;
 
 /**
  * This class is responsible for taking screenshot by using the Mink session
@@ -20,21 +20,21 @@ class ScreenshotTaker
     /** @var OutputPrinter $output */
     private $output;
 
-    /** @var ImageDriverContainer $driverContainer */
-    private $driverContainer;
+    /** @var ImageDriver[] $imageDrivers */
+    private $imageDrivers;
 
     /**
      * Constructor
      *
      * @param Mink $mink
      * @param OutputPrinter $output
-     * @param ImageDriverContainer $driverContainer
+     * @param ImageDriver[] $imageDrivers
      */
-    public function __construct(Mink $mink, OutputPrinter $output, ImageDriverContainer $driverContainer)
+    public function __construct(Mink $mink, OutputPrinter $output, array $imageDrivers)
     {
         $this->mink = $mink;
         $this->output = $output;
-        $this->driverContainer = $driverContainer;
+        $this->imageDrivers = $imageDrivers;
     }
 
     /**
@@ -46,7 +46,7 @@ class ScreenshotTaker
     {
         $screenshot = $this->mink->getSession()->getScreenshot();
 
-        foreach ($this->driverContainer->getActiveDrivers() as $imageDriver) {
+        foreach ($this->imageDrivers as $imageDriver) {
             $imageUrl = $imageDriver->upload($screenshot, $fileName);
             $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
         }

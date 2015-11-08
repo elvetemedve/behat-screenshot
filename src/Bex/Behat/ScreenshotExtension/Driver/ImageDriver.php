@@ -2,11 +2,12 @@
 
 namespace Bex\Behat\ScreenshotExtension\Driver;
 
+use Bex\Behat\ScreenshotExtension\Driver\DriverInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-abstract class ImageDriver
+abstract class ImageDriver implements DriverInterface
 {
     /**
      * @return string

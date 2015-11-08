@@ -2,7 +2,6 @@
 
 namespace Bex\Behat\ScreenshotExtension\Driver;
 
-use Bex\Behat\ScreenshotExtension\Config\Parameters;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -39,7 +38,8 @@ class Local extends ImageDriver
         $builder
             ->children()
                 ->scalarNode(self::CONFIG_PARAM_SCREENSHOT_DIRECTORY)
-                ->defaultValue($this->getDefaultDirectory())
+                    ->defaultValue($this->getDefaultDirectory())
+                ->end()
             ->end();
     }
 

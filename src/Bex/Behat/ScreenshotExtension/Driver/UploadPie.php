@@ -43,7 +43,8 @@ class UploadPie extends ImageDriver
         $builder
             ->children()
                 ->scalarNode(self::CONFIG_PARAM_EXPIRE)
-                ->defaultValue(30)
+                    ->defaultValue(30)
+                ->end()
             ->end();
     }
 
