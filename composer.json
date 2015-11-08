@@ -25,7 +25,8 @@
         "behat/mink-extension" : "^2.0.0",
         "symfony/filesystem": "^2.7",
         "kriswallsmith/buzz": "^0.15.0",
-        "bex/behat-extension-driver-locator": "dev-master"
+        "bex/behat-extension-driver-locator": "dev-master",
+        "bex/behat-screenshot-image-driver-uploadpie": "dev-master"
     },
     "require-dev": {
         "phpspec/phpspec" : "^2.3.0"
