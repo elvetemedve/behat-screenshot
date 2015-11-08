@@ -75,4 +75,5 @@ Feature: Taking screenshot
       """
     When I run Behat
     Then I should see a failing test
+    And I should see the message "Screenshot has been taken. Open image at %temp-dir%/behat-screenshot/i_have_a_failing_step.png"
     And I should have the image file "%temp-dir%/behat-screenshot/i_have_a_failing_step.png"

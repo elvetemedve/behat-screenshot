@@ -101,7 +101,10 @@ class TestRunnerContext implements SnippetAcceptingContext
     {
         if (!$scope->getTestResult()->isPassed()) {
             $outputFile = sys_get_temp_dir() . '/behat-screenshot.out';
-            $this->filesystem->dumpFile($outputFile, $this->behatProcess->getErrorOutput());
+            $this->filesystem->dumpFile(
+                $outputFile,
+                $this->behatProcess->getOutput() . $this->behatProcess->getErrorOutput()
+            );
             throw new RuntimeException("Output of secondary Behat process has been saved to $outputFile");
         }
     }
@@ -171,6 +174,26 @@ class TestRunnerContext implements SnippetAcceptingContext
         if ($this->behatProcess->getExitCode() == 0) {
             throw new RuntimeException('Behat did not find any failing scenario.');
         }
+    }
+
+    /**
+     * Returns the output of Behat command
+     *
+     * @return string
+     */
+    public function getStandardOutputMessage()
+    {
+        return $this->behatProcess->getOutput();
+    }
+
+    /**
+     * Returns the error output of Behat command
+     *
+     * @return string
+     */
+    public function getStandardErrorMessage()
+    {
+        return $this->behatProcess->getErrorOutput();
     }
 
     private function runBehat()
