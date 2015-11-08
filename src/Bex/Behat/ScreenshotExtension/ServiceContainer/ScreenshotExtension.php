@@ -9,8 +9,8 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Bex\Behat\ScreenshotExtension\ServiceContainer\Driver\Locator as DriverLocator;
-use Bex\Behat\ScreenshotExtension\ServiceContainer\Driver\NodeBuilder as DriverNodeBuilder;
+use Bex\Behat\ExtensionDriverLocator\DriverLocator;
+use Bex\Behat\ExtensionDriverLocator\DriverNodeBuilder;
 
 /**
  * This class is the entry point of the screenshot extension
