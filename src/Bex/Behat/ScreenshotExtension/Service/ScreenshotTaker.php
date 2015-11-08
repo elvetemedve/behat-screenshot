@@ -1,11 +1,10 @@
 <?php
 
-namespace Bex\Behat\ScreenshotExtension\Mink;
+namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
 use Behat\Testwork\Output\Printer\OutputPrinter;
-use Bex\Behat\ScreenshotExtension\Driver\ImageDriver;
-use Symfony\Component\Filesystem\Filesystem;
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 
 /**
  * This class is responsible for taking screenshot by using the Mink session
@@ -20,7 +19,7 @@ class ScreenshotTaker
     /** @var OutputPrinter $output */
     private $output;
 
-    /** @var ImageDriver[] $imageDrivers */
+    /** @var ImageDriverInterface[] $imageDrivers */
     private $imageDrivers;
 
     /**
@@ -28,7 +27,7 @@ class ScreenshotTaker
      *
      * @param Mink $mink
      * @param OutputPrinter $output
-     * @param ImageDriver[] $imageDrivers
+     * @param ImageDriverInterface[] $imageDrivers
      */
     public function __construct(Mink $mink, OutputPrinter $output, array $imageDrivers)
     {

@@ -93,8 +93,8 @@ class Locator
         $tree = new TreeBuilder();
         $root = $tree->root('drivers');
 
-        foreach ($this->drivers as $driver) {
-            $driver->configure($root->children()->arrayNode($driver->getConfigKey()));
+        foreach ($this->drivers as $driverKey => $driver) {
+            $driver->configure($root->children()->arrayNode($driverKey));
         }
 
         return $tree->buildTree();
@@ -110,8 +110,8 @@ class Locator
     {
         $configProcessor = new Processor();
 
-        foreach ($this->drivers as $key => $driver) {
-            $configs[$key] = isset($configs[$key]) ? $configs[$key] : [];
+        foreach ($this->drivers as $driverKey => $driver) {
+            $configs[$driverKey] = isset($configs[$driverKey]) ? $configs[$driverKey] : [];
         }
 
         return $configProcessor->process($configTree, ['drivers' => $configs]);

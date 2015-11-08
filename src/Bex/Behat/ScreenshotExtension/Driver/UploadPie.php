@@ -2,7 +2,7 @@
 
 namespace Bex\Behat\ScreenshotExtension\Driver;
 
-use Bex\Behat\ScreenshotExtension\Config\Parameters;
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Buzz\Client\Curl;
 use Buzz\Message\Form\FormRequest;
 use Buzz\Message\Form\FormUpload;
@@ -10,7 +10,7 @@ use Buzz\Message\Response;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class UploadPie extends ImageDriver
+class UploadPie implements ImageDriverInterface
 {
     const CONFIG_PARAM_EXPIRE = 'expire';
 

@@ -9,8 +9,8 @@ use Behat\Gherkin\Node\StepNode;
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Tester\Result\TestResult;
 use Behat\Testwork\Tester\Setup\Teardown;
-use Bex\Behat\ScreenshotExtension\Mink\ScreenshotTaker;
-use Bex\Behat\ScreenshotExtension\String\StepFilenameGenerator;
+use Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker;
+use Bex\Behat\ScreenshotExtension\Service\StepFilenameGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -33,7 +33,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
 
     function it_is_subscribed_for_after_step_event()
     {
-        $this->getSubscribedEvents()->shouldHaveKeyWithValue('tester.step_tested.after', ['checkAfterStep']);
+        $this->getSubscribedEvents()->shouldHaveKeyWithValue('tester.step_tested.after', 'checkAfterStep');
     }
 
     function it_does_not_take_screenshot_on_success_event(

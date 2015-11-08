@@ -3,11 +3,11 @@
 namespace Bex\Behat\ScreenshotExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
-use Behat\Testwork\Tester\Result\TestResult;
-use Bex\Behat\ScreenshotExtension\Mink\ScreenshotTaker;
-use Bex\Behat\ScreenshotExtension\String\StepFilenameGenerator;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Behat\Behat\EventDispatcher\Event\StepTested;
+use Behat\Testwork\Tester\Result\TestResult;
+use Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker;
+use Bex\Behat\ScreenshotExtension\Service\StepFilenameGenerator;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * This class is responsible to decide when to make a screenshot
@@ -16,10 +16,14 @@ use Behat\Behat\EventDispatcher\Event\StepTested;
  */
 final class ScreenshotListener implements EventSubscriberInterface
 {
-    /** @var ScreenshotTaker $screenshotTaker */
+    /**
+     * @var ScreenshotTaker
+     */
     private $screenshotTaker;
 
-    /** @var StepFilenameGenerator $filenameGenerator */
+    /**
+     * @var StepFilenameGenerator
+     */
     private $filenameGenerator;
 
     /**

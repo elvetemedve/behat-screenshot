@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Bex\Behat\ScreenshotExtension\String;
+namespace spec\Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Gherkin\Node\StepNode;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +15,7 @@ class StepFilenameGeneratorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Bex\Behat\ScreenshotExtension\String\StepFilenameGenerator');
+        $this->shouldHaveType('Bex\Behat\ScreenshotExtension\Service\StepFilenameGenerator');
     }
 
     function it_generates_a_sanitized_filename_for_a_scenario_step(StepNode $step)

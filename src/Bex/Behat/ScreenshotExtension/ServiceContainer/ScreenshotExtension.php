@@ -2,21 +2,15 @@
 
 namespace Bex\Behat\ScreenshotExtension\ServiceContainer;
 
-use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
 use Behat\Testwork\ServiceContainer\Extension;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Bex\Behat\ScreenshotExtension\Config\Parameters;
-use Bex\Behat\ScreenshotExtension\Driver\ImageDriver;
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Driver\Locator as DriverLocator;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Driver\NodeBuilder as DriverNodeBuilder;
-use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension as Event;
 
 /**
  * This class is the entry point of the screenshot extension
@@ -28,7 +22,7 @@ use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension as 
 final class ScreenshotExtension implements Extension
 {
     const DRIVER_NAMESPACE = 'Bex\\Behat\\ScreenshotExtension\\Driver';
-    const DRIVER_PARENT = 'Bex\\Behat\\ScreenshotExtension\\Driver\\ImageDriver';
+    const DRIVER_PARENT = ImageDriverInterface::class;
 
     /**
      * @var DriverLocator
@@ -50,9 +44,7 @@ final class ScreenshotExtension implements Extension
     }
 
     /**
-     * Returns the extension config key.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getConfigKey()
     {
@@ -76,14 +68,14 @@ final class ScreenshotExtension implements Extension
     }
 
     /**
-     * @param  ArrayNodeDefinition $builder
+     * {@inheritdoc}
      */
     public function configure(ArrayNodeDefinition $builder)
     {
         $builder
             ->children()
                 ->booleanNode('enabled')
-                    ->defaultValue(true)
+                    ->defaultTrue()
                 ->end()
             ->end();
 
@@ -91,26 +83,33 @@ final class ScreenshotExtension implements Extension
     }
 
     /**
-     * Loads extension services into temporary container.
-     *
-     * @param ContainerBuilder $container
-     * @param array $config
+     * {@inheritdoc}
      */
     public function load(ContainerBuilder $container, array $config)
     {
+        if ($config['enabled']) {
+            $this->loadExtension($container, $config['active_image_drivers'], $config['image_drivers']);
+        }
+    }
+
+    /**
+     * @param  ContainerBuilder $container
+     * @param  array            $activeImageDrivers
+     * @param  array            $imageDriverConfigs
+     */
+    private function loadExtension(ContainerBuilder $container, $activeImageDrivers, $imageDriverConfigs)
+    {
+        $this->registerServices($container);
+        $drivers = $this->driverLocator->findDrivers($container, $activeImageDrivers, $imageDriverConfigs);
+        $container->setParameter('bex.screenshot_extension.active_image_drivers', $drivers);
+    }
+
+    /**
+     * @param  ContainerBuilder $container
+     */
+    private function registerServices(ContainerBuilder $container)
+    {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/config'));
         $loader->load('services.xml');
-
-        $container->setParameter('bex.screenshot_extension.active_image_drivers', []);
-
-        if ($config['enabled']) {
-            $drivers = $this->driverLocator->findDrivers(
-                $container,
-                $config['active_image_drivers'],
-                $config['image_drivers']
-            );
-            $container->setParameter('bex.screenshot_extension.active_image_drivers', $drivers);
-            $container->getDefinition('bex.screenshot_extension.screenshot_listener')->addTag(Event::SUBSCRIBER_TAG);
-        }
     }
 }

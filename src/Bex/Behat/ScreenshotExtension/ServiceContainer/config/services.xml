@@ -3,13 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="bex.screenshot_extension.filesystem" class="Symfony\Component\Filesystem\Filesystem" />
         <service id="bex.screenshot_extension.output_printer" class="Behat\Testwork\Output\Printer\ConsoleOutputPrinter" />
-        <service id="bex.screenshot_extension.curl_client" class="Buzz\Client\Curl" />
-        <service id="bex.screenshot_extension.step_filename_generator" class="Bex\Behat\ScreenshotExtension\String\StepFilenameGenerator" public="false" />
-        <service id="bex.screenshot_extension.image_driver_container" class="Bex\Behat\ScreenshotExtension\ServiceContainer\Driver\Container" public="false" />
 
-        <service id="bex.screenshot_extension.screenshot_taker" class="Bex\Behat\ScreenshotExtension\Mink\ScreenshotTaker" public="false">
+        <service id="bex.screenshot_extension.step_filename_generator" class="Bex\Behat\ScreenshotExtension\Service\StepFilenameGenerator" public="false" />
+
+        <service id="bex.screenshot_extension.screenshot_taker" class="Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker" public="false">
             <argument type="service" id="mink" />
             <argument type="service" id="bex.screenshot_extension.output_printer" />
             <argument>%bex.screenshot_extension.active_image_drivers%</argument>
@@ -17,6 +15,7 @@
 
         <!-- event listener -->
         <service id="bex.screenshot_extension.screenshot_listener" class="Bex\Behat\ScreenshotExtension\Listener\ScreenshotListener" public="false">
+            <tag name="event_dispatcher.subscriber" priority="0"/>
             <argument type="service" id="bex.screenshot_extension.screenshot_taker" />
             <argument type="service" id="bex.screenshot_extension.step_filename_generator" />
         </service>

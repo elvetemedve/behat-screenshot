@@ -2,12 +2,13 @@
 
 namespace Bex\Behat\ScreenshotExtension\Driver;
 
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Local extends ImageDriver
+class Local implements ImageDriverInterface
 {
     const DEFAULT_DIRECTORY = 'behat-screenshot';
     const CONFIG_PARAM_SCREENSHOT_DIRECTORY = 'screenshot_directory';

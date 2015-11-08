@@ -1,6 +1,6 @@
 <?php
 
-namespace Bex\Behat\ScreenshotExtension\String;
+namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Gherkin\Node\StepNode;
 

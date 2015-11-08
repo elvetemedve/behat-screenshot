@@ -8,11 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 interface DriverInterface
 {
     /**
-     * @return string
-     */
-    public function getConfigKey();
-
-    /**
      * @param  ArrayNodeDefinition $builder
      *
      * @return void

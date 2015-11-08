@@ -7,23 +7,14 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-abstract class ImageDriver implements DriverInterface
+interface ImageDriverInterface extends DriverInterface
 {
-    /**
-     * @return string
-     */
-    public function getConfigKey()
-    {
-        $fullclass = static::class;
-        return strtolower(Container::underscore(substr($fullclass, strrpos($fullclass, '\\')+1)));
-    }
-
     /**
      * @param  ArrayNodeDefinition $builder
      *
      * @return void
      */
-    abstract public function configure(ArrayNodeDefinition $builder);
+    public function configure(ArrayNodeDefinition $builder);
 
     /**
      * @param  ContainerBuilder $container
@@ -31,7 +22,7 @@ abstract class ImageDriver implements DriverInterface
      *
      * @return void
      */
-    abstract public function load(ContainerBuilder $container, array $config);
+    public function load(ContainerBuilder $container, array $config);
 
     /**
      * @param string $binaryImage
@@ -39,5 +30,5 @@ abstract class ImageDriver implements DriverInterface
      *
      * @return string URL to the image
      */
-    abstract public function upload($binaryImage, $filename);
+    public function upload($binaryImage, $filename);
 }

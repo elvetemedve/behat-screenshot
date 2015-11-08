@@ -2,7 +2,7 @@
 
 namespace Bex\Behat\ScreenshotExtension\Driver;
 
-use Bex\Behat\ScreenshotExtension\Config\Parameters;
+use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Buzz\Client\Curl;
 use Buzz\Message\Form\FormRequest;
 use Buzz\Message\Form\FormUpload;
@@ -13,7 +13,7 @@ use Buzz\Util\Url;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class Img42 extends ImageDriver
+class Img42 implements ImageDriverInterface
 {
     const REQUEST_URL = 'https://img42.com';
     const IMAGE_BASE_URL= 'https://img42.com/';
