@@ -27,7 +27,8 @@
         "kriswallsmith/buzz": "^0.15.0",
         "bex/behat-extension-driver-locator": "dev-master",
         "bex/behat-screenshot-image-driver-uploadpie": "dev-master",
-        "bex/behat-screenshot-image-driver-img42": "dev-master"
+        "bex/behat-screenshot-image-driver-img42": "dev-master",
+        "bex/behat-screenshot-image-driver-unsee": "dev-master"
     },
     "require-dev": {
         "phpspec/phpspec" : "^2.3.0"
