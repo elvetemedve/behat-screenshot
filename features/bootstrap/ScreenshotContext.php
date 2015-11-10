@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Bex\Behat\Context\TestRunnerContext;
 
 /**
  * Class ScreenshotContext
@@ -23,7 +24,7 @@ class ScreenshotContext implements SnippetAcceptingContext
     {
         $environment = $scope->getEnvironment();
 
-        $this->testRunnerContext = $environment->getContext('TestRunnerContext');
+        $this->testRunnerContext = $environment->getContext('Bex\Behat\Context\TestRunnerContext');
     }
 
 

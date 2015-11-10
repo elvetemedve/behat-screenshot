@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b6eb484a1ed3722a7e833d5e071d364a",
-    "content-hash": "134becb835721cf90b787470ee4df3e0",
+    "hash": "5da42325b5e5c95ec9ac279cccb184cf",
+    "content-hash": "8a3759611d1bb124a5d609ef03bbecaa",
     "packages": [
         {
             "name": "behat/behat",
@@ -302,6 +302,274 @@
                 "transliterator"
             ],
             "time": "2015-09-28 16:26:35"
+        },
+        {
+            "name": "bex/behat-extension-driver-locator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-extension-driver-locator.git",
+                "reference": "430db652a2e713ca17456413570f2e17e7a908f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-extension-driver-locator/zipball/430db652a2e713ca17456413570f2e17e7a908f9",
+                "reference": "430db652a2e713ca17456413570f2e17e7a908f9",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Driver locator tool for behat extensions",
+            "homepage": "https://github.com/tkotosz/behat-extension-driver-locator",
+            "keywords": [
+                "bdd",
+                "behat",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-extension-driver-locator/tree/master",
+                "issues": "https://github.com/tkotosz/behat-extension-driver-locator/issues"
+            },
+            "time": "2015-11-08 13:02:10"
+        },
+        {
+            "name": "bex/behat-screenshot-image-driver-img42",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-screenshot-image-driver-img42.git",
+                "reference": "6557f49f3bcac8162df67dc7c653778fdd193e4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-screenshot-image-driver-img42/zipball/6557f49f3bcac8162df67dc7c653778fdd193e4d",
+                "reference": "6557f49f3bcac8162df67dc7c653778fdd193e4d",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "kriswallsmith/buzz": "^0.15.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\ScreenshotExtension\\Driver\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "img42.com image driver for bex/behat-screenshot behat extension",
+            "homepage": "https://github.com/tkotosz/behat-screenshot-image-driver-img42",
+            "keywords": [
+                "bdd",
+                "behat",
+                "behat-screenshot",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-screenshot-image-driver-img42/tree/master",
+                "issues": "https://github.com/tkotosz/behat-screenshot-image-driver-img42/issues"
+            },
+            "time": "2015-11-08 13:42:26"
+        },
+        {
+            "name": "bex/behat-screenshot-image-driver-unsee",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee.git",
+                "reference": "33ec1a877e5953a190e5d8af1ba81d7b4722500d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-screenshot-image-driver-unsee/zipball/33ec1a877e5953a190e5d8af1ba81d7b4722500d",
+                "reference": "33ec1a877e5953a190e5d8af1ba81d7b4722500d",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "kriswallsmith/buzz": "^0.15.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\ScreenshotExtension\\Driver\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "unsee.cc image driver for bex/behat-screenshot behat extension",
+            "homepage": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee",
+            "keywords": [
+                "bdd",
+                "behat",
+                "behat-screenshot",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee/tree/master",
+                "issues": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee/issues"
+            },
+            "time": "2015-11-08 13:46:30"
+        },
+        {
+            "name": "bex/behat-screenshot-image-driver-uploadpie",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie.git",
+                "reference": "9224d9578cd378594ac52defe7189cb8fb3a8bca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-screenshot-image-driver-uploadpie/zipball/9224d9578cd378594ac52defe7189cb8fb3a8bca",
+                "reference": "9224d9578cd378594ac52defe7189cb8fb3a8bca",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "kriswallsmith/buzz": "^0.15.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\ScreenshotExtension\\Driver\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Geza Buza",
+                    "email": "bghome@gmail.com",
+                    "homepage": "https://twitter.com/medve540",
+                    "role": "Developer"
+                }
+            ],
+            "description": "uploadpie.com image driver for bex/behat-screenshot extension",
+            "homepage": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie",
+            "keywords": [
+                "bdd",
+                "behat",
+                "behat-screenshot",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie/tree/master",
+                "issues": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie/issues"
+            },
+            "time": "2015-11-08 13:31:47"
+        },
+        {
+            "name": "bex/behat-test-runner",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elvetemedve/behat-test-runner.git",
+                "reference": "151ea55daca5c27709dad04085ce88d008dd7c34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elvetemedve/behat-test-runner/zipball/151ea55daca5c27709dad04085ce88d008dd7c34",
+                "reference": "151ea55daca5c27709dad04085ce88d008dd7c34",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\Context\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Geza Buza",
+                    "email": "bghome@gmail.com",
+                    "homepage": "https://twitter.com/medve540",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Component to help in self testing Behat extension development",
+            "homepage": "https://github.com/elvetemedve/behat-test-runner",
+            "keywords": [
+                "bdd",
+                "behat",
+                "extension",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/elvetemedve/behat-test-runner/tree/master",
+                "issues": "https://github.com/elvetemedve/behat-test-runner/issues"
+            },
+            "time": "2015-11-09 23:17:01"
         },
         {
             "name": "kriswallsmith/buzz",
@@ -1587,7 +1855,13 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "bex/behat-extension-driver-locator": 20,
+        "bex/behat-screenshot-image-driver-uploadpie": 20,
+        "bex/behat-screenshot-image-driver-img42": 20,
+        "bex/behat-screenshot-image-driver-unsee": 20,
+        "bex/behat-test-runner": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
