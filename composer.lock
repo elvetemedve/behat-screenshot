@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6e0d3601cd0f5471aeec690f775d4a4e",
+    "hash": "5da42325b5e5c95ec9ac279cccb184cf",
+    "content-hash": "8a3759611d1bb124a5d609ef03bbecaa",
     "packages": [
         {
             "name": "behat/behat",
@@ -205,16 +206,16 @@
         },
         {
             "name": "behat/mink-extension",
-            "version": "v2.0.1",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkExtension.git",
-                "reference": "06a4cb56614b047d8d15ea5cd392d19fd3d856e8"
+                "reference": "06e2b99d92e175719d7e841d5be16b7df1a233c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/06a4cb56614b047d8d15ea5cd392d19fd3d856e8",
-                "reference": "06a4cb56614b047d8d15ea5cd392d19fd3d856e8",
+                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/06e2b99d92e175719d7e841d5be16b7df1a233c5",
+                "reference": "06e2b99d92e175719d7e841d5be16b7df1a233c5",
                 "shasum": ""
             },
             "require": {
@@ -224,13 +225,13 @@
                 "symfony/config": "~2.2"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": "~1.0",
+                "behat/mink-goutte-driver": "~1.1",
                 "phpspec/phpspec": "~2.0"
             },
             "type": "behat-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -260,7 +261,7 @@
                 "test",
                 "web"
             ],
-            "time": "2014-09-23 10:59:27"
+            "time": "2015-09-29 17:42:41"
         },
         {
             "name": "behat/transliterator",
@@ -301,6 +302,322 @@
                 "transliterator"
             ],
             "time": "2015-09-28 16:26:35"
+        },
+        {
+            "name": "bex/behat-extension-driver-locator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-extension-driver-locator.git",
+                "reference": "430db652a2e713ca17456413570f2e17e7a908f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-extension-driver-locator/zipball/430db652a2e713ca17456413570f2e17e7a908f9",
+                "reference": "430db652a2e713ca17456413570f2e17e7a908f9",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Driver locator tool for behat extensions",
+            "homepage": "https://github.com/tkotosz/behat-extension-driver-locator",
+            "keywords": [
+                "bdd",
+                "behat",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-extension-driver-locator/tree/master",
+                "issues": "https://github.com/tkotosz/behat-extension-driver-locator/issues"
+            },
+            "time": "2015-11-08 13:02:10"
+        },
+        {
+            "name": "bex/behat-screenshot-image-driver-img42",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-screenshot-image-driver-img42.git",
+                "reference": "6557f49f3bcac8162df67dc7c653778fdd193e4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-screenshot-image-driver-img42/zipball/6557f49f3bcac8162df67dc7c653778fdd193e4d",
+                "reference": "6557f49f3bcac8162df67dc7c653778fdd193e4d",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "kriswallsmith/buzz": "^0.15.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\ScreenshotExtension\\Driver\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "img42.com image driver for bex/behat-screenshot behat extension",
+            "homepage": "https://github.com/tkotosz/behat-screenshot-image-driver-img42",
+            "keywords": [
+                "bdd",
+                "behat",
+                "behat-screenshot",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-screenshot-image-driver-img42/tree/master",
+                "issues": "https://github.com/tkotosz/behat-screenshot-image-driver-img42/issues"
+            },
+            "time": "2015-11-08 13:42:26"
+        },
+        {
+            "name": "bex/behat-screenshot-image-driver-unsee",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee.git",
+                "reference": "33ec1a877e5953a190e5d8af1ba81d7b4722500d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-screenshot-image-driver-unsee/zipball/33ec1a877e5953a190e5d8af1ba81d7b4722500d",
+                "reference": "33ec1a877e5953a190e5d8af1ba81d7b4722500d",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "kriswallsmith/buzz": "^0.15.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\ScreenshotExtension\\Driver\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "unsee.cc image driver for bex/behat-screenshot behat extension",
+            "homepage": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee",
+            "keywords": [
+                "bdd",
+                "behat",
+                "behat-screenshot",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee/tree/master",
+                "issues": "https://github.com/tkotosz/behat-screenshot-image-driver-unsee/issues"
+            },
+            "time": "2015-11-08 13:46:30"
+        },
+        {
+            "name": "bex/behat-screenshot-image-driver-uploadpie",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie.git",
+                "reference": "9224d9578cd378594ac52defe7189cb8fb3a8bca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-screenshot-image-driver-uploadpie/zipball/9224d9578cd378594ac52defe7189cb8fb3a8bca",
+                "reference": "9224d9578cd378594ac52defe7189cb8fb3a8bca",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "kriswallsmith/buzz": "^0.15.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\ScreenshotExtension\\Driver\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Geza Buza",
+                    "email": "bghome@gmail.com",
+                    "homepage": "https://twitter.com/medve540",
+                    "role": "Developer"
+                }
+            ],
+            "description": "uploadpie.com image driver for bex/behat-screenshot extension",
+            "homepage": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie",
+            "keywords": [
+                "bdd",
+                "behat",
+                "behat-screenshot",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie/tree/master",
+                "issues": "https://github.com/tkotosz/behat-screenshot-image-driver-uploadpie/issues"
+            },
+            "time": "2015-11-08 13:31:47"
+        },
+        {
+            "name": "bex/behat-test-runner",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elvetemedve/behat-test-runner.git",
+                "reference": "151ea55daca5c27709dad04085ce88d008dd7c34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elvetemedve/behat-test-runner/zipball/151ea55daca5c27709dad04085ce88d008dd7c34",
+                "reference": "151ea55daca5c27709dad04085ce88d008dd7c34",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "php": "^5.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bex\\Behat\\Context\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Geza Buza",
+                    "email": "bghome@gmail.com",
+                    "homepage": "https://twitter.com/medve540",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Component to help in self testing Behat extension development",
+            "homepage": "https://github.com/elvetemedve/behat-test-runner",
+            "keywords": [
+                "bdd",
+                "behat",
+                "extension",
+                "tdd"
+            ],
+            "support": {
+                "source": "https://github.com/elvetemedve/behat-test-runner/tree/master",
+                "issues": "https://github.com/elvetemedve/behat-test-runner/issues"
+            },
+            "time": "2015-11-09 23:17:01"
+        },
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kriswallsmith/Buzz.git",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/d4041666c3ffb379af02a92dabe81c904b35fab8",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2015-06-25 17:26:56"
         },
         {
             "name": "symfony/class-loader",
@@ -775,6 +1092,67 @@
     ],
     "packages-dev": [
         {
+            "name": "behat/mink-selenium2-driver",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
+                "reference": "bedbf1999c7ba1bc6921b30ee2eadf383e7ff5c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/bedbf1999c7ba1bc6921b30ee2eadf383e7ff5c9",
+                "reference": "bedbf1999c7ba1bc6921b30ee2eadf383e7ff5c9",
+                "shasum": ""
+            },
+            "require": {
+                "behat/mink": "~1.7@dev",
+                "instaclick/php-webdriver": "~1.1",
+                "php": ">=5.3.1"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7"
+            },
+            "type": "mink-driver",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Behat\\Mink\\Driver\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Konstantin Kudryashov",
+                    "email": "ever.zet@gmail.com",
+                    "homepage": "http://everzet.com"
+                },
+                {
+                    "name": "Pete Otaqui",
+                    "email": "pete@otaqui.com",
+                    "homepage": "https://github.com/pete-otaqui"
+                }
+            ],
+            "description": "Selenium2 (WebDriver) driver for Mink framework",
+            "homepage": "http://mink.behat.org/",
+            "keywords": [
+                "ajax",
+                "browser",
+                "javascript",
+                "selenium",
+                "testing",
+                "webdriver"
+            ],
+            "time": "2015-09-21 21:02:54"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.0.5",
             "source": {
@@ -827,6 +1205,105 @@
                 "instantiate"
             ],
             "time": "2015-06-14 21:17:01"
+        },
+        {
+            "name": "instaclick/php-webdriver",
+            "version": "1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/instaclick/php-webdriver.git",
+                "reference": "0c20707dcf30a32728fd6bdeeab996c887fdb2fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/0c20707dcf30a32728fd6bdeeab996c887fdb2fb",
+                "reference": "0c20707dcf30a32728fd6bdeeab996c887fdb2fb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WebDriver": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Bishop",
+                    "email": "jubishop@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anthon Pang",
+                    "email": "apang@softwaredevelopment.ca",
+                    "role": "Fork Maintainer"
+                }
+            ],
+            "description": "PHP WebDriver for Selenium 2",
+            "homepage": "http://instaclick.com/",
+            "keywords": [
+                "browser",
+                "selenium",
+                "webdriver",
+                "webtest"
+            ],
+            "time": "2015-06-15 20:19:33"
+        },
+        {
+            "name": "jakoch/phantomjs-installer",
+            "version": "1.9.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jakoch/phantomjs-installer.git",
+                "reference": "fd6459094404f698a4edb9609e5e8c55c6418824"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jakoch/phantomjs-installer/zipball/fd6459094404f698a4edb9609e5e8c55c6418824",
+                "reference": "fd6459094404f698a4edb9609e5e8c55c6418824",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*"
+            },
+            "type": "custom-installer",
+            "autoload": {
+                "psr-0": {
+                    "PhantomInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jens-André Koch",
+                    "email": "jakoch@web.de"
+                }
+            ],
+            "description": "A Composer package which installs the PhantomJS binary (Linux, Windows, Mac) into `/bin` of your project.",
+            "keywords": [
+                "binaries",
+                "headless",
+                "phantomjs"
+            ],
+            "time": "2014-12-05 17:57:27"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1378,7 +1855,13 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "bex/behat-extension-driver-locator": 20,
+        "bex/behat-screenshot-image-driver-uploadpie": 20,
+        "bex/behat-screenshot-image-driver-img42": 20,
+        "bex/behat-screenshot-image-driver-unsee": 20,
+        "bex/behat-test-runner": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
