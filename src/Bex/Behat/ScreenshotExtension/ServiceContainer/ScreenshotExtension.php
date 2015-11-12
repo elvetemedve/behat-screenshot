@@ -22,7 +22,7 @@ use Bex\Behat\ExtensionDriverLocator\DriverNodeBuilder;
 final class ScreenshotExtension implements Extension
 {
     const DRIVER_NAMESPACE = 'Bex\\Behat\\ScreenshotExtension\\Driver';
-    const DRIVER_PARENT = ImageDriverInterface::class;
+    const DRIVER_PARENT = 'Bex\\Behat\\ScreenshotExtension\\Driver\\ImageDriverInterface';
 
     /**
      * @var DriverLocator
