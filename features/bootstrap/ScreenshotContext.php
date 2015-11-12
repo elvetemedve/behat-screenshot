@@ -59,6 +59,28 @@ class ScreenshotContext implements SnippetAcceptingContext
     }
 
     /**
+     * @Then I should not see the message :message
+     */
+    public function iShouldNotSeeTheMessage($message)
+    {
+        try {
+            $this->iShouldSeeTheMessage($message);
+        } catch (RuntimeException $e) {
+            return;
+        }
+
+        throw new RuntimeException('Behat output contained the given message.');
+    }
+
+    /**
+     * @AfterSuite
+     */
+    public static function cleanUp()
+    {
+        self::removeTempDirs(['/tmp/behat-screenshot/', '/tmp/behat-screenshot-custom/']);
+    }
+
+    /**
      * @param $text
      * @return mixed
      */
@@ -74,6 +96,28 @@ class ScreenshotContext implements SnippetAcceptingContext
     {
         if (mb_strpos($output, $message) === false) {
             throw new RuntimeException('Behat output did not contain the given message.');
+        }
+    }
+
+    /**
+     * @param array $directories
+     */
+    private static function removeTempDirs(array $directories)
+    {
+        foreach ($directories as $directory) {
+            $fileIterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                    $directory,
+                    FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
+                ),
+                RecursiveIteratorIterator::CHILD_FIRST
+            );
+
+            foreach ($fileIterator as $file) {
+                $file->isFile() ? unlink($file) : rmdir($file);
+            }
+
+            rmdir($directory);
         }
     }
 }
