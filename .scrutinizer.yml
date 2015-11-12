@@ -34,12 +34,8 @@ build:
 
     tests:
         override:
-            -
-                command: bin/phpspec run --no-interaction --format=pretty
-                on_node: 1
-            -
-                command: bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty
-                on_node: 2
+            - bin/phpspec run --no-interaction --format=pretty
+            - bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty
         after:
             - SCRUTINIZER_START_TIME=$(cat /tmp/build-start-time.txt) sh -c 'curl -sS https://gist.githubusercontent.com/tonypiper/fd3cf9a67b71d4e3928c/raw/152f1d873f98ff4256ca8bc3041443eae7c890b4/keenio-logger.php | php'
 
