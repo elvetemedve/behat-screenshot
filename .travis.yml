@@ -1,0 +1,24 @@
+language: php
+
+sudo: false
+
+php: [5.4, 5.5, 5.6, 7.0, hhvm]
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: 7.0
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+before_install:
+  - composer self-update
+
+install:
+  - composer update --no-interaction --prefer-source
+
+script:
+  - bin/phpspec run --no-interaction --format=pretty
+  - bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty

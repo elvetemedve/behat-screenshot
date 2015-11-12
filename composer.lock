@@ -5,7 +5,6 @@
         "This file is @generated automatically"
     ],
     "hash": "5da42325b5e5c95ec9ac279cccb184cf",
-    "content-hash": "8a3759611d1bb124a5d609ef03bbecaa",
     "packages": [
         {
             "name": "behat/behat",
@@ -525,12 +524,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/elvetemedve/behat-test-runner.git",
-                "reference": "151ea55daca5c27709dad04085ce88d008dd7c34"
+                "reference": "1859bcf1a1509a554bb15960a900244df68d88e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elvetemedve/behat-test-runner/zipball/151ea55daca5c27709dad04085ce88d008dd7c34",
-                "reference": "151ea55daca5c27709dad04085ce88d008dd7c34",
+                "url": "https://api.github.com/repos/elvetemedve/behat-test-runner/zipball/1859bcf1a1509a554bb15960a900244df68d88e8",
+                "reference": "1859bcf1a1509a554bb15960a900244df68d88e8",
                 "shasum": ""
             },
             "require": {
@@ -569,7 +568,7 @@
                 "source": "https://github.com/elvetemedve/behat-test-runner/tree/master",
                 "issues": "https://github.com/elvetemedve/behat-test-runner/issues"
             },
-            "time": "2015-11-09 23:17:01"
+            "time": "2015-11-10 23:38:43"
         },
         {
             "name": "kriswallsmith/buzz",
