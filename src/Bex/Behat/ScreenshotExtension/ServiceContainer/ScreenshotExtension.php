@@ -109,7 +109,7 @@ final class ScreenshotExtension implements Extension
      */
     private function registerServices(ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/config'));
         $loader->load('services.xml');
     }
 }
