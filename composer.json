@@ -20,18 +20,19 @@
         }
     ],
     "require": {
-        "php" : ">=5.4",
-        "behat/behat" : "^3.0.0",
-        "behat/mink-extension" : "^2.0.0",
+        "php": ">=5.4",
+        "behat/behat": "^3.0.0",
+        "behat/mink-extension": "^2.0.0",
         "bex/behat-extension-driver-locator": "dev-master",
         "symfony/filesystem": "^2.7",
         "kriswallsmith/buzz": "^0.15.0"
     },
     "require-dev": {
         "bex/behat-test-runner": "dev-master",
-        "phpspec/phpspec" : "2.4.0-alpha2",
+        "phpspec/phpspec": "2.4.0-alpha2",
         "jakoch/phantomjs-installer": "^1.9.8",
-        "behat/mink-selenium2-driver": "^1.3.0"
+        "behat/mink-selenium2-driver": "^1.3.0",
+        "bex/behat-screenshot-image-driver-dummy": "dev-master"
     },
     "repositories": [
         {
@@ -41,6 +42,10 @@
         {
             "type": "vcs",
             "url": "git@github.com:elvetemedve/behat-test-runner.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:tkotosz/behat-screenshot-image-driver-dummy.git"
         }
     ],
     "config": {

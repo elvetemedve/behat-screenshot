@@ -77,3 +77,23 @@ Feature: Taking screenshot
     Then I should see a failing test
     And I should see the message "Screenshot has been taken. Open image at %temp-dir%/behat-screenshot/i_have_a_failing_step.png"
     And I should have the image file "%temp-dir%/behat-screenshot/i_have_a_failing_step.png"
+
+  Scenario: Save screenshot using external driver
+    Given I have the configuration:
+      """
+      default:
+        extensions:
+          Behat\MinkExtension:
+            base_url: 'http://localhost:8080'
+            sessions:
+              default:
+                selenium2:
+                  wd_host: http://localhost:4444/wd/hub
+                  browser: phantomjs
+
+          Bex\Behat\ScreenshotExtension:
+            active_image_drivers: dummy
+      """
+    When I run Behat
+    Then I should see a failing test
+    And I should see the message "Screenshot has been taken. Open image at http://docs.behat.org/en/v2.5/_static/img/logo.png"
