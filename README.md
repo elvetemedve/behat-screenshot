@@ -1,32 +1,98 @@
-TODO: 
-- write proper readme file
-- use 3rd-party service to store images temporarily (candidates: http://uploadpie.com/)
-- multistep screenshot
+Behat-ScreenshotExtension helps you debug Behat scenarios by taking screenshot of the failing steps.
 
-Example configs:
+By default the extension takes the screenshot and save it to the preconfigured directory (by default it will save the image to the default temporary system directory).
 
-Bex\Behat\ScreenshotExtension: ~
+Also the extenstion allows you to specify an image driver which can upload the image to a host, in this case you will see the image url in the terminal right after the failing step. See available image drivers [below](.#available-image-drivers).
 
-Bex\Behat\ScreenshotExtension:
-  active_image_drivers: upload_pie
+You can also create your own image driver easily, for more information see [this section](.#how-to-create-your-own-image-driver).
 
-Bex\Behat\ScreenshotExtension:
-  active_image_drivers: ~
+Installation
+------------
 
-Bex\Behat\ScreenshotExtension:
-  active_image_drivers: [local, upload_pie, unsee, img42]
-  image_drivers:
-    local:
-      screenshot_directory: /vagrant
-    upload_pie:
-      expire: 30
+Install by adding to your `composer.json`:
 
+```bash
+composer require --dev bex/behat-screenshot
+```
 
-Example wrong config:
-Bex\Behat\ScreenshotExtension:
-  active_image_drivers: ~
-  image_drivers:
-    local:
-      something: somevalue
+Configuration
+-------------
 
-Result should be: Unrecognized option "something" under "image_drivers.local"
+Enable the extension in `behat.yml` like this:
+
+```yml
+default:
+  extensions:
+    Bex\Behat\ScreenshotExtension: ~
+```
+
+You can configure the screenshot directory like this:
+```yml
+default:
+  extensions:
+    Bex\Behat\ScreenshotExtension:
+      image_drivers:
+        local:
+          screenshot_directory: /your/desired/path/for/screenshots
+```
+
+If you are using another image driver you can enable it like this:
+```yml
+default:
+  extensions:
+    Bex\Behat\ScreenshotExtension:
+      active_image_drivers: customdriver
+      image_drivers: # this node and the driver subnodes are optional, if you remove it then the driver's default values will be used
+        customdriver:
+          #... custom driver config goes here ...
+```
+
+You can even enable more than one image driver at once:
+```yml
+default:
+  extensions:
+    Bex\Behat\ScreenshotExtension:
+      active_image_drivers: [local, customdriver]
+      image_drivers:
+        local:
+          #... local driver config goes here ...
+        customdriver:
+          #... custom driver config goes here ...
+```
+
+You can disable the extension by removing from the behat.yml or you can disable it for a profile by using the `enabled` parameter, e.g.:
+```yml
+ci:
+  extensions:
+    Bex\Behat\ScreenshotExtension:
+      enabled: false
+```
+
+Usage
+-----
+
+When you run behat and a step fails then the extension will automatically take the screenshot and you will see the filepath or the image URL of the screenshot (based on the configured image driver). So you will see something like this:
+
+```bash
+  Scenario:                           # features/feature.feature:2
+    Given I have a step               # FeatureContext::passingStep()
+    When I have a failing step        # FeatureContext::failingStep()
+      Error (Exception)
+Screenshot has been taken. Open image at /tmp/behat-screenshot/i_have_a_failing_step.png
+    Then I should have a skipped step # FeatureContext::skippedStep()
+```
+
+Available Image Drivers
+-----
+- bex/behat-screenshot-image-driver-img42
+- bex/behat-screenshot-image-driver-uploadpie
+- bex/behat-screenshot-image-driver-unsee
+
+How to create your own image driver
+-----
+1. Implement the `Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface`
+1. Put your class under the `Bex\Behat\ScreenshotExtension\Driver` namespace
+
+Thats it!
+
+See example here: https://github.com/tkotosz/behat-screenshot-image-driver-dummy
