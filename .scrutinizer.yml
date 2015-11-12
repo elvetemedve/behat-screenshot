@@ -44,7 +44,7 @@ build:
             - date -u +"%Y-%m-%dT%H:%M:%SZ" > /tmp/build-start-time.txt
 
         override:
-            - { command: 'composer install --no-interaction', idle_timeout: 600 }
+            - { command: 'composer update --no-interaction --prefer-source', idle_timeout: 600 }
 
     cache:
         directories: [ vendor/, bin/ ]
