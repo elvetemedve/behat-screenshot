@@ -1,3 +1,9 @@
+Behat-ScreenshotExtension
+=========================
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/build.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/build-status/master)
+[![Build Status](https://travis-ci.org/elvetemedve/behat-screenshot.svg?branch=master)](https://travis-ci.org/elvetemedve/behat-screenshot)
+
 Behat-ScreenshotExtension helps you debug Behat scenarios by taking screenshot of the failing steps.
 
 By default the extension takes the screenshot and save it to the preconfigured directory (by default it will save the image to the default temporary system directory).
