@@ -1,0 +1,60 @@
+checks:
+    php: true
+
+tools:
+    external_code_coverage: false
+    php_code_coverage: false
+    php_code_sniffer:
+        config: { standard: 'Zend' }
+    php_changetracking: false
+    php_sim: false
+    php_cs_fixer: true
+    php_mess_detector: true
+    php_pdepend: true
+    php_analyzer: true
+    sensiolabs_security_checker: true
+
+filter:
+    paths:
+        - 'src/*'
+    excluded_paths:
+        - 'features/bootstrap/*'
+        - 'dev/*'
+        - 'var/*'
+        - 'lib/*'
+        - 'bin/*'
+        - 'vendor/*'
+
+build:
+    environment:
+        php:
+            version: 5.4
+            ini:
+                'always_populate_raw_post_data': '-1'
+
+    tests:
+        override:
+            -
+                command: bin/phpspec run --no-interaction --format=pretty
+                on_node: 1
+            -
+                command: bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty
+                on_node: 2
+        after:
+            - SCRUTINIZER_START_TIME=$(cat /tmp/build-start-time.txt) sh -c 'curl -sS https://gist.githubusercontent.com/tonypiper/fd3cf9a67b71d4e3928c/raw/152f1d873f98ff4256ca8bc3041443eae7c890b4/keenio-logger.php | php'
+
+    dependencies:
+        before:
+            - date -u +"%Y-%m-%dT%H:%M:%SZ" > /tmp/build-start-time.txt
+
+        override:
+            - { command: 'composer install --no-interaction', idle_timeout: 600 }
+
+    cache:
+        directories: [ vendor/, bin/ ]
+
+build_failure_conditions:
+    - 'elements.rating(<= B).new.exists'
+    - 'issues.label("coding-style").new.exists'
+    - 'issues.new.exists'
+    - 'project.metric("scrutinizer.quality", < 9.00)'
