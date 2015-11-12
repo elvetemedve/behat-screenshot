@@ -2,9 +2,9 @@ Behat-ScreenshotExtension helps you debug Behat scenarios by taking screenshot o
 
 By default the extension takes the screenshot and save it to the preconfigured directory (by default it will save the image to the default temporary system directory).
 
-Also the extenstion allows you to specify an image driver which can upload the image to a host, in this case you will see the image url in the terminal right after the failing step. See available image drivers [below](.#available-image-drivers).
+Also the extenstion allows you to specify an image driver which can upload the image to a host, in this case you will see the image url in the terminal right after the failing step. See available image drivers [below](#available-image-drivers).
 
-You can also create your own image driver easily, for more information see [this section](.#how-to-create-your-own-image-driver).
+You can also create your own image driver easily, for more information see [this section](#how-to-create-your-own-image-driver).
 
 Installation
 ------------
