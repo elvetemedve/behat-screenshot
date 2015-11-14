@@ -1,5 +1,7 @@
 Behat-ScreenshotExtension
 =========================
+[![License](https://poser.pugx.org/bex/behat-screenshot/license)](https://packagist.org/packages/bex/behat-screenshot)
+[![Latest Stable Version](https://poser.pugx.org/bex/behat-screenshot/version)](https://packagist.org/packages/bex/behat-screenshot)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/build.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/build-status/master)
 [![Build Status](https://travis-ci.org/elvetemedve/behat-screenshot.svg?branch=master)](https://travis-ci.org/elvetemedve/behat-screenshot)
@@ -90,9 +92,9 @@ Screenshot has been taken. Open image at /tmp/behat-screenshot/i_have_a_failing_
 
 Available Image Drivers
 -----
-- bex/behat-screenshot-image-driver-img42
-- bex/behat-screenshot-image-driver-uploadpie
-- bex/behat-screenshot-image-driver-unsee
+- [bex/behat-screenshot-image-driver-uploadpie](https://packagist.org/packages/bex/behat-screenshot-image-driver-uploadpie)
+- [bex/behat-screenshot-image-driver-img42](https://packagist.org/packages/bex/behat-screenshot-image-driver-img42)
+- [bex/behat-screenshot-image-driver-unsee](https://packagist.org/packages/bex/behat-screenshot-image-driver-unsee)
 
 How to create your own image driver
 -----

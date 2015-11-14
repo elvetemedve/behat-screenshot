@@ -2,7 +2,7 @@
     "name": "bex/behat-screenshot",
     "type": "library",
     "description": "Extension for behat to help debug failing scenarios",
-    "keywords": ["tdd","bdd","behat"],
+    "keywords": ["tdd","bdd","behat", "behat-screenshot"],
     "homepage": "https://github.com/elvetemedve/behat-screenshot",
     "license": "MIT",
     "authors": [
@@ -34,12 +34,11 @@
         "behat/mink-selenium2-driver": "^1.3.0",
         "bex/behat-screenshot-image-driver-dummy": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:tkotosz/behat-screenshot-image-driver-dummy.git"
-        }
-    ],
+    "suggest": {
+        "bex/behat-screenshot-image-driver-uploadpie": "Allows to upload the screenshot to uploadpie.com",
+        "bex/behat-screenshot-image-driver-img42": "Allows to upload the screenshot to img42.com",
+        "bex/behat-screenshot-image-driver-unsee": "Allows to upload the screenshot to unsee.cc"
+    },
     "config": {
         "bin-dir": "bin"
     },
