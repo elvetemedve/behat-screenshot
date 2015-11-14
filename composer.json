@@ -32,7 +32,7 @@
         "phpspec/phpspec": "2.4.0-alpha2",
         "jakoch/phantomjs-installer": "^1.9.8",
         "behat/mink-selenium2-driver": "^1.3.0",
-        "bex/behat-screenshot-image-driver-dummy": "dev-master"
+        "bex/behat-screenshot-image-driver-dummy": "*"
     },
     "suggest": {
         "bex/behat-screenshot-image-driver-uploadpie": "Allows to upload the screenshot to uploadpie.com",
