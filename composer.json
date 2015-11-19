@@ -43,7 +43,7 @@
     },
     "autoload": {
         "psr-0": {
-            "": "src"
+            "Bex\\Behat\\ScreenshotExtension\\": "src"
         }
     },
     "scripts": {
