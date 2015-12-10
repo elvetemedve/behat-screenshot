@@ -43,11 +43,15 @@ class ScreenshotTaker
      */
     public function takeScreenshot($fileName = 'failure.png')
     {
-        $screenshot = $this->mink->getSession()->getScreenshot();
-
-        foreach ($this->imageDrivers as $imageDriver) {
-            $imageUrl = $imageDriver->upload($screenshot, $fileName);
-            $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
-        }
+        try {
+            $screenshot = $this->mink->getSession()->getScreenshot();
+            
+            foreach ($this->imageDrivers as $imageDriver) {
+                $imageUrl = $imageDriver->upload($screenshot, $fileName);
+                $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
+            }
+        } catch (\Exception $e) {
+            $this->output->writeln($e->getMessage());
+        }        
     }
 }
