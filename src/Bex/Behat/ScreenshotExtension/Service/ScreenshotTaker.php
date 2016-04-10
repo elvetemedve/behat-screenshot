@@ -3,9 +3,9 @@
 namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
-use Behat\Testwork\Output\Printer\OutputPrinter;
+use Behat\Testwork\Output\Printer\StreamOutputPrinter;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
-
+use Behat\Testwork\Output\Printer\Factory\ConsoleOutputFactory;
 /**
  * This class is responsible for taking screenshot by using the Mink session
  *
@@ -16,24 +16,28 @@ class ScreenshotTaker
     /** @var Mink $mink */
     private $mink;
 
-    /** @var OutputPrinter $output */
+    /** @var ConsoleOutputFactory $output */
     private $output;
 
     /** @var ImageDriverInterface[] $imageDrivers */
     private $imageDrivers;
 
+    /** @var StreamOutputPrinter $outputStream */
+    private $outputStream;
+    
     /**
      * Constructor
      *
      * @param Mink $mink
-     * @param OutputPrinter $output
+     * @param StreamOutputPrinter $output
      * @param ImageDriverInterface[] $imageDrivers
      */
-    public function __construct(Mink $mink, OutputPrinter $output, array $imageDrivers)
+    public function __construct(Mink $mink, ConsoleOutputFactory $output, array $imageDrivers)
     {
         $this->mink = $mink;
         $this->output = $output;
         $this->imageDrivers = $imageDrivers;
+        $this->outputStream = new StreamOutputPrinter ($output);
     }
 
     /**
@@ -45,13 +49,13 @@ class ScreenshotTaker
     {
         try {
             $screenshot = $this->mink->getSession()->getScreenshot();
-            
+
             foreach ($this->imageDrivers as $imageDriver) {
                 $imageUrl = $imageDriver->upload($screenshot, $fileName);
-                $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
+                $this->outputStream->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
             }
         } catch (\Exception $e) {
-            $this->output->writeln($e->getMessage());
-        }        
+            $this->outputStream->writeln($e->getMessage());
+        }
     }
 }
