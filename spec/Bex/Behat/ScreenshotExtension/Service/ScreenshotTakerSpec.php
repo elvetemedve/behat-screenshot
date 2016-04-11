@@ -2,12 +2,12 @@
 
 namespace spec\Bex\Behat\ScreenshotExtension\Service;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
-use Behat\Testwork\Output\Printer\OutputPrinter;
 use Bex\Behat\ScreenshotExtension\Driver\Local;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Unit test of the class ScreenshotTaker
@@ -16,7 +16,7 @@ use Bex\Behat\ScreenshotExtension\Driver\Local;
  */
 class ScreenshotTakerSpec extends ObjectBehavior
 {
-    function let(Mink $mink, OutputPrinter $output, Local $localImageDriver)
+    function let(Mink $mink, OutputInterface $output, Local $localImageDriver)
     {
         $this->beConstructedWith($mink, $output, [$localImageDriver]);
     }

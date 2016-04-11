@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="bex.screenshot_extension.output_printer" class="Behat\Testwork\Output\Printer\ConsoleOutputPrinter" />
+        <service id="bex.screenshot_extension.output_printer" class="Symfony\Component\Console\Output\ConsoleOutput" />
 
         <service id="bex.screenshot_extension.step_filename_generator" class="Bex\Behat\ScreenshotExtension\Service\StepFilenameGenerator" public="false" />
 
