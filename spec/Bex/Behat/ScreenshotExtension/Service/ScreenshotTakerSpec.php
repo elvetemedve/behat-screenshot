@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
-use Behat\Testwork\Output\Printer\OutputPrinter;
 use Bex\Behat\ScreenshotExtension\Driver\Local;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * Unit test of the class ScreenshotTaker
@@ -16,7 +16,8 @@ use Bex\Behat\ScreenshotExtension\Driver\Local;
  */
 class ScreenshotTakerSpec extends ObjectBehavior
 {
-    function let(Mink $mink, OutputPrinter $output, Local $localImageDriver)
+
+    function let(Mink $mink, ConsoleOutput $output, Local $localImageDriver)
     {
         $this->beConstructedWith($mink, $output, [$localImageDriver]);
     }
