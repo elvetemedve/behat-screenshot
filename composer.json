@@ -29,7 +29,7 @@
     "require-dev": {
         "bex/behat-test-runner": "^1.0",
         "phpspec/phpspec": "2.4.0-alpha2",
-        "jakoch/phantomjs-installer": "^1.9.8",
+        "jakoch/phantomjs-installer": "^2.1.1",
         "behat/mink-selenium2-driver": "^1.3.0",
         "bex/behat-screenshot-image-driver-dummy": "^1.0"
     },
