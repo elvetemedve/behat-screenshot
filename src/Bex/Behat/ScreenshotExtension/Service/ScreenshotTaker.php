@@ -26,7 +26,7 @@ class ScreenshotTaker
      * Constructor
      *
      * @param Mink $mink
-     * @param ConsoleOutputFactory $output
+     * @param ConsoleOutput $output
      * @param ImageDriverInterface[] $imageDrivers
      */
     public function __construct(Mink $mink, ConsoleOutput $output, array $imageDrivers)
