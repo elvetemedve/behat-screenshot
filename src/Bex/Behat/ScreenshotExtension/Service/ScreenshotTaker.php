@@ -4,7 +4,6 @@ namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
