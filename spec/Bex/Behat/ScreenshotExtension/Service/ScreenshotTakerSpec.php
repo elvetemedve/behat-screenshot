@@ -16,9 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ScreenshotTakerSpec extends ObjectBehavior
 {
-    function let(Mink $mink, OutputInterface $output, Local $localImageDriver)
+    function let(Mink $mink, OutputInterface $output, Local $localImageDriver, Session $session)
     {
         $this->beConstructedWith($mink, $output, [$localImageDriver]);
+
+        $this->initializeOutputStub($output);
+        $this->initializeMinkStub($mink, $session);
+        $this->initializeSessionStub($session);
     }
 
     function it_is_initializable()
@@ -26,12 +30,43 @@ class ScreenshotTakerSpec extends ObjectBehavior
         $this->shouldHaveType('Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker');
     }
 
-    function it_should_call_the_image_upload_with_correct_params(Mink $mink, Session $session, Local $localImageDriver)
+    function it_should_call_the_image_upload_with_correct_params(Local $localImageDriver)
     {
-        $mink->getSession()->willReturn($session);
-        $session->getScreenshot()->willReturn('binary-image');
         $localImageDriver->upload('binary-image', 'test.png')->shouldBeCalled();
 
         $this->takeScreenshot('test.png');
+    }
+
+    function it_should_print_coloured_message_by_default(OutputInterface $output)
+    {
+        $output->writeln(Argument::containingString('<comment>'), OutputInterface::OUTPUT_NORMAL)->shouldBeCalled();
+
+        $this->takeScreenshot('test.png');
+    }
+
+    function it_should_not_return_coloured_message_when_ansi_mode_is_disabled(OutputInterface $output)
+    {
+        $output->isDecorated()->willReturn(false);
+
+        $output->writeln(Argument::type('string'), OutputInterface::OUTPUT_NORMAL)->shouldNotBeCalled();
+        $output->writeln(Argument::type('string'), OutputInterface::OUTPUT_PLAIN)->shouldBeCalled();
+
+        $this->takeScreenshot('test.png');
+    }
+
+    private function initializeOutputStub(OutputInterface $output)
+    {
+        $output->isDecorated()->willReturn(true);
+        $output->writeln(Argument::type('string'), Argument::any())->willReturn(null);
+    }
+
+    private function initializeMinkStub(Mink $mink, Session $session)
+    {
+        $mink->getSession()->willReturn($session);
+    }
+
+    private function initializeSessionStub(Session $session)
+    {
+        $session->getScreenshot()->willReturn('binary-image');
     }
 }

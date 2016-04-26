@@ -4,7 +4,6 @@ namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -49,10 +48,24 @@ class ScreenshotTaker
             
             foreach ($this->imageDrivers as $imageDriver) {
                 $imageUrl = $imageDriver->upload($screenshot, $fileName);
-                $this->output->writeln('Screenshot has been taken. Open image at ' . $imageUrl);
+                $this->printImageLocation($imageUrl);
             }
         } catch (\Exception $e) {
             $this->output->writeln($e->getMessage());
         }        
+    }
+
+    /**
+     * @param string $imageUrl
+     */
+    private function printImageLocation($imageUrl)
+    {
+        $message = sprintf(
+            '<comment>Screenshot has been taken. Open image at <error>%s</error></comment>',
+            $imageUrl
+        );
+        $options = $this->output->isDecorated() ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_PLAIN;
+        
+        $this->output->writeln($message, $options);
     }
 }

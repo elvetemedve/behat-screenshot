@@ -105,6 +105,10 @@ class ScreenshotContext implements SnippetAcceptingContext
     private static function removeTempDirs(array $directories)
     {
         foreach ($directories as $directory) {
+            if (!is_dir($directory)) {
+                continue;
+            }
+
             $fileIterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator(
                     $directory,
