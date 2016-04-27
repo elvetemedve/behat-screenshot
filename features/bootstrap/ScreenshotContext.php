@@ -73,6 +73,35 @@ class ScreenshotContext implements SnippetAcceptingContext
     }
 
     /**
+     * @Given I have an image :image file in :directory directory
+     */
+    public function iHaveAnImageFileInDirectory($image, $directory)
+    {
+        $filename = rtrim($directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $image;
+        $this->createDirectory($directory);
+        $this->createDummyImage($filename);
+    }
+
+    /**
+     * @Given the only file in :directory directory should be :filename
+     */
+    public function theOnlyFileInDirectoryShouldBe($directory, $filename)
+    {
+        $files = glob(rtrim($directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*');
+
+        if (count($files) > 1 || array_search($filename, $files) === false) {
+            throw new RuntimeException(
+                sprintf(
+                    'Only file "%s" is expected to be in "%s" directory, but %d files found.',
+                    $filename,
+                    $directory,
+                    count($files)
+                )
+            );
+        }
+    }
+
+    /**
      * @AfterSuite
      */
     public static function cleanUp()
@@ -123,5 +152,19 @@ class ScreenshotContext implements SnippetAcceptingContext
 
             rmdir($directory);
         }
+    }
+
+    private function createDirectory($directory)
+    {
+        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        if (!$filesystem->exists($directory)) {
+            $filesystem->mkdir($directory);
+        }
+    }
+
+    private function createDummyImage($saveAsFile)
+    {
+        $base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQIW2P4//8/AAX+Av6hN/6/AAAAAElFTkSuQmCC';
+        file_put_contents($saveAsFile, base64_decode($base64Image));
     }
 }

@@ -7,11 +7,14 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Local implements ImageDriverInterface
 {
     const DEFAULT_DIRECTORY = 'behat-screenshot';
     const CONFIG_PARAM_SCREENSHOT_DIRECTORY = 'screenshot_directory';
+    const CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY = 'clear_screenshot_directory';
 
     /**
      * @var Filesystem
@@ -24,11 +27,25 @@ class Local implements ImageDriverInterface
     private $screenshotDirectory;
 
     /**
-     * @param Filesystem $filesystem
+     * @var Finder
      */
-    public function __construct(Filesystem $filesystem = null)
+    private $finder;
+    
+    /**
+     * @var \finfo
+     */
+    private $fileInfo;
+
+    /**
+     * @param Filesystem $filesystem
+     * @param Finder $finder
+     * @param \finfo $fileInfo
+     */
+    public function __construct(Filesystem $filesystem = null, Finder $finder = null, \finfo $fileInfo = null)
     {
         $this->filesystem = $filesystem ?: new Filesystem();
+        $this->finder = $finder ?: new Finder();
+        $this->fileInfo = $fileInfo ?: new \finfo();
     }
 
     /**
@@ -41,6 +58,9 @@ class Local implements ImageDriverInterface
                 ->scalarNode(self::CONFIG_PARAM_SCREENSHOT_DIRECTORY)
                     ->defaultValue($this->getDefaultDirectory())
                 ->end()
+                ->booleanNode(self::CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY)
+                    ->defaultValue(false)
+                ->end()
             ->end();
     }
 
@@ -51,6 +71,10 @@ class Local implements ImageDriverInterface
     public function load(ContainerBuilder $container, array $config)
     {
         $this->screenshotDirectory = $config[self::CONFIG_PARAM_SCREENSHOT_DIRECTORY];
+
+        if ($config[self::CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY]) {
+            $this->clearScreenshotDirectory();
+        }
     }
 
     /**
@@ -101,5 +125,19 @@ class Local implements ImageDriverInterface
         } catch (IOException $e) {
             throw new \RuntimeException(sprintf('Cannot create screenshot directory "%s".', $directory));
         }
+    }
+
+    private function clearScreenshotDirectory()
+    {
+        $filesToDelete = [];
+
+        /** @var SplFileInfo $file */
+        foreach ($this->finder->files()->in($this->getTargetPath('')) as $file) {
+            if (strpos($this->fileInfo->file($file->getRealPath(), FILEINFO_MIME_TYPE), 'image/') !== false) {
+                $filesToDelete[] = $file->getRealPath();
+            }
+        }
+
+        $this->filesystem->remove($filesToDelete);
     }
 }

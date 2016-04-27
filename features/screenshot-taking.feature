@@ -131,3 +131,27 @@ Feature: Taking screenshot
       """
     When I run Behat
     Then I should not see the message "Screenshot has been taken."
+
+  Scenario: Clear local screenshot directory before running the tests
+    Given I have the configuration:
+      """
+      default:
+        extensions:
+          Behat\MinkExtension:
+            base_url: 'http://localhost:8080'
+            sessions:
+              default:
+                selenium2:
+                  wd_host: http://localhost:4444/wd/hub
+                  browser: phantomjs
+
+          Bex\Behat\ScreenshotExtension:
+            image_drivers:
+              local:
+                screenshot_directory: /tmp/behat-screenshot-custom/
+                clear_screenshot_directory: true
+      """
+    And I have an image "dummy.png" file in "/tmp/behat-screenshot-custom/" directory
+    When I run Behat
+    Then I should see a failing test
+    And the only file in "/tmp/behat-screenshot-custom/" directory should be "/tmp/behat-screenshot-custom/i_have_a_failing_step.png"

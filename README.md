@@ -43,6 +43,7 @@ default:
       image_drivers:
         local:
           screenshot_directory: /your/desired/path/for/screenshots
+          clear_screenshot_directory: true  # Enable removing all images before each test run. It is false by default.
 ```
 
 If you are using another image driver you can enable it like this:
