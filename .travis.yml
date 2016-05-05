@@ -9,14 +9,15 @@ matrix:
 
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.composer/cache
 
 before_install:
   - composer self-update
 
 install:
-  - composer update --no-interaction --prefer-source
+  - composer install --no-interaction --prefer-source
 
 script:
   - bin/phpspec run --no-interaction --format=pretty
-  - bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty
+  - bin/phantomjs --webdriver=4444 &
+  - bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty --profile=travis-ci

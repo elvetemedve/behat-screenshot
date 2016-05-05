@@ -5,3 +5,9 @@ default:
         - Bex\Behat\Context\TestRunnerContext:
             browserCommand: %paths.base%/bin/phantomjs --webdriver=4444
         - ScreenshotContext
+travis-ci:
+  suites:
+    default:
+      contexts:
+        - Bex\Behat\Context\TestRunnerContext
+        - ScreenshotContext
