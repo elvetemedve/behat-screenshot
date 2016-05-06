@@ -2,10 +2,13 @@
 
 namespace Bex\Behat\ScreenshotExtension\Listener;
 
+use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
+use Behat\Behat\EventDispatcher\Event\ScenarioTested;
 use Behat\Behat\EventDispatcher\Event\StepTested;
 use Behat\Testwork\Tester\Result\TestResult;
 use Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker;
+use Bex\Behat\ScreenshotExtension\Service\ScreenshotUploader;
 use Bex\Behat\ScreenshotExtension\Service\StepFilenameGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -25,17 +28,27 @@ final class ScreenshotListener implements EventSubscriberInterface
      * @var StepFilenameGenerator
      */
     private $filenameGenerator;
+    
+    /**
+     * @var ScreenshotUploader
+     */
+    private $screenshotUploader;
 
     /**
      * Constructor
      *
      * @param ScreenshotTaker $screenshotTaker
      * @param StepFilenameGenerator $filenameGenerator
+     * @param ScreenshotUploader $screenshotUploader
      */
-    public function __construct(ScreenshotTaker $screenshotTaker, StepFilenameGenerator $filenameGenerator)
-    {
+    public function __construct(
+        ScreenshotTaker $screenshotTaker, 
+        StepFilenameGenerator $filenameGenerator, 
+        ScreenshotUploader $screenshotUploader
+    ) {
         $this->screenshotTaker = $screenshotTaker;
         $this->filenameGenerator = $filenameGenerator;
+        $this->screenshotUploader = $screenshotUploader;
     }
 
     /**
@@ -43,7 +56,10 @@ final class ScreenshotListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [StepTested::AFTER => 'checkAfterStep'];
+        return [
+            StepTested::AFTER => 'checkAfterStep',
+            ScenarioTested::AFTER => 'cleanupAfterScenario',
+        ];
     }
 
     /**
@@ -53,9 +69,16 @@ final class ScreenshotListener implements EventSubscriberInterface
      */
     public function checkAfterStep(AfterStepTested $event)
     {
+        $this->screenshotTaker->takeScreenshot();
         if ($event->getTestResult()->getResultCode() === TestResult::FAILED) {
             $stepFileName = $this->filenameGenerator->convertStepToFileName($event->getStep());
-            $this->screenshotTaker->takeScreenshot($stepFileName);
+            $image = $this->screenshotTaker->getImage();
+            $this->screenshotUploader->upload($image, $stepFileName);
         }
+    }
+    
+    public function cleanupAfterScenario()
+    {
+        $this->screenshotTaker->reset();
     }
 }

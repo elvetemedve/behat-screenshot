@@ -12,6 +12,11 @@
         <service id="bex.screenshot_extension.screenshot_taker" class="Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker" public="false">
             <argument type="service" id="mink" />
             <argument type="service" id="bex.screenshot_extension.indented_output" />
+            <argument>%bex.screenshot_extension.record_all_steps%</argument>
+        </service>
+
+        <service id="bex.screenshot_extension.screenshot_uploader" class="Bex\Behat\ScreenshotExtension\Service\ScreenshotUploader" public="false">
+            <argument type="service" id="bex.screenshot_extension.indented_output" />
             <argument>%bex.screenshot_extension.active_image_drivers%</argument>
         </service>
 
@@ -20,6 +25,7 @@
             <tag name="event_dispatcher.subscriber" priority="0"/>
             <argument type="service" id="bex.screenshot_extension.screenshot_taker" />
             <argument type="service" id="bex.screenshot_extension.step_filename_generator" />
+            <argument type="service" id="bex.screenshot_extension.screenshot_uploader" />
         </service>
     </services>
 </container>

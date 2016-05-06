@@ -10,6 +10,7 @@ use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Tester\Result\TestResult;
 use Behat\Testwork\Tester\Setup\Teardown;
 use Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker;
+use Bex\Behat\ScreenshotExtension\Service\ScreenshotUploader;
 use Bex\Behat\ScreenshotExtension\Service\StepFilenameGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -21,9 +22,12 @@ use Prophecy\Argument;
  */
 class ScreenshotListenerSpec extends ObjectBehavior
 {
-    function let(ScreenshotTaker $screenshotTaker, StepFilenameGenerator $filenameGenerator)
-    {
-        $this->beConstructedWith($screenshotTaker, $filenameGenerator);
+    function let(
+        ScreenshotTaker $screenshotTaker,
+        StepFilenameGenerator $filenameGenerator,
+        ScreenshotUploader $screenshotUploader
+    ) {
+        $this->beConstructedWith($screenshotTaker, $filenameGenerator, $screenshotUploader);
     }
 
     function it_is_initializable()
@@ -37,7 +41,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
     }
 
     function it_does_not_take_screenshot_on_success_event(
-        ScreenshotTaker $screenshotTaker,
+        ScreenshotUploader $screenshotUploader,
         Environment $env,
         FeatureNode $feature,
         StepNode $step,
@@ -52,13 +56,14 @@ class ScreenshotListenerSpec extends ObjectBehavior
             $tearDown->getWrappedObject()
         );
         $result->getResultCode()->willReturn(TestResult::PASSED);
-        $screenshotTaker->takeScreenshot(Argument::any())->shouldNotBeCalled();
+        $screenshotUploader->upload(Argument::cetera())->shouldNotBeCalled();
 
         $this->checkAfterStep($event);
     }
 
     function it_takes_a_screenshot_after_a_failed_step(
         ScreenshotTaker $screenshotTaker,
+        ScreenshotUploader $screenshotUploader,
         Environment $env,
         FeatureNode $feature,
         StepNode $step,
@@ -73,13 +78,16 @@ class ScreenshotListenerSpec extends ObjectBehavior
             $tearDown->getWrappedObject()
         );
         $result->getResultCode()->willReturn(TestResult::FAILED);
-        $screenshotTaker->takeScreenshot(Argument::any())->shouldBeCalled();
+        $screenshotTaker->takeScreenshot()->shouldBeCalled();
+        $screenshotTaker->getCombinedImage()->shouldBeCalled();
+        $screenshotUploader->upload(Argument::cetera())->shouldBeCalled();
 
         $this->checkAfterStep($event);
     }
 
     function it_generates_filename_from_step_name(
         ScreenshotTaker $screenshotTaker,
+        ScreenshotUploader $screenshotUploader,
         StepFilenameGenerator $filenameGenerator,
         Environment $env,
         FeatureNode $feature,
@@ -97,7 +105,9 @@ class ScreenshotListenerSpec extends ObjectBehavior
         );
         $result->getResultCode()->willReturn(TestResult::FAILED);
         $filenameGenerator->convertStepToFileName($step)->willReturn('test.jpg')->shouldBeCalled();
-        $screenshotTaker->takeScreenshot('test.jpg')->shouldBeCalled();
+        $screenshotTaker->takeScreenshot()->shouldBeCalled();
+        $screenshotTaker->getCombinedImage()->shouldBeCalled();
+        $screenshotUploader->upload(Argument::cetera())->shouldBeCalled();
 
         $this->checkAfterStep($event);
     }

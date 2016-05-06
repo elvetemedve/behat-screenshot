@@ -77,6 +77,13 @@ final class ScreenshotExtension implements Extension
                 ->booleanNode('enabled')
                     ->defaultTrue()
                 ->end()
+                ->booleanNode('record_all_steps')
+                    ->defaultFalse()
+                    ->validate()
+                        ->ifTrue($this->getImageMagickValidator())
+                        ->thenInvalid('Imagemagick PHP extension is required, but not installed.')
+                    ->end()
+                ->end()
             ->end();
 
         $this->driverNodeBuilder->buildDriverNodes($builder, 'active_image_drivers', 'image_drivers', ['local']);
@@ -88,20 +95,20 @@ final class ScreenshotExtension implements Extension
     public function load(ContainerBuilder $container, array $config)
     {
         if ($config['enabled']) {
-            $this->loadExtension($container, $config['active_image_drivers'], $config['image_drivers']);
+            $this->loadExtension($container, $config);
         }
     }
 
     /**
      * @param  ContainerBuilder $container
-     * @param  array            $activeImageDrivers
-     * @param  array            $imageDriverConfigs
+     * @param array $config
      */
-    private function loadExtension(ContainerBuilder $container, $activeImageDrivers, $imageDriverConfigs)
+    private function loadExtension(ContainerBuilder $container, array $config)
     {
         $this->registerServices($container);
-        $drivers = $this->driverLocator->findDrivers($container, $activeImageDrivers, $imageDriverConfigs);
+        $drivers = $this->driverLocator->findDrivers($container, $config['active_image_drivers'], $config['image_drivers']);
         $container->setParameter('bex.screenshot_extension.active_image_drivers', $drivers);
+        $container->setParameter('bex.screenshot_extension.record_all_steps', $config['record_all_steps']);
     }
 
     /**
@@ -111,5 +118,12 @@ final class ScreenshotExtension implements Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/config'));
         $loader->load('services.xml');
+    }
+
+    private function getImageMagickValidator()
+    {
+        return function ($enabled) {
+            return $enabled && !class_exists('\Imagick');
+        };
     }
 }
