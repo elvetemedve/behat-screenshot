@@ -4,6 +4,7 @@ namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -25,26 +26,24 @@ class ScreenshotTaker
     private $screenshots;
 
     /**
-     * @var boolean $recordAllSteps
+     * @var Config $config
      */
-    private $recordAllSteps;
+    private $config;
 
     /**
-     * Constructor
-     *
-     * @param Mink $mink
+     * @param Mink            $mink
      * @param OutputInterface $output
-     * @param boolean $recordAllSteps
+     * @param Config          $config
      */
-    public function __construct(Mink $mink, OutputInterface $output, $recordAllSteps)
+    public function __construct(Mink $mink, OutputInterface $output, Config $config)
     {
         $this->mink = $mink;
         $this->output = $output;
-        $this->recordAllSteps = $recordAllSteps;
+        $this->config = $config;
     }
 
     /**
-     * Save the screenshot as the given filename
+     * Save the screenshot into a local buffer
      */
     public function takeScreenshot()
     {
@@ -55,11 +54,17 @@ class ScreenshotTaker
         }        
     }
 
+    /**
+     * @return string
+     */
     public function getImage()
     {
-        return $this->recordAllSteps ? $this->getCombinedImage() : $this->getLastImage();
+        return $this->config->shouldCombineImages() ? $this->getCombinedImage() : $this->getLastImage();
     }
     
+    /**
+     * @return string
+     */
     private function getCombinedImage()
     {
         $im = new \Imagick();
@@ -75,9 +80,12 @@ class ScreenshotTaker
         /* Output the image */
         $combined->setImageFormat("png");
 
-        return (string)$combined;
+        return (string) $combined;
     }
 
+    /**
+     * @return string
+     */
     private function getLastImage()
     {
         return end($this->screenshots);

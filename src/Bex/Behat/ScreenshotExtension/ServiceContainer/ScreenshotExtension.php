@@ -4,13 +4,14 @@ namespace Bex\Behat\ScreenshotExtension\ServiceContainer;
 
 use Behat\Testwork\ServiceContainer\Extension;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
+use Bex\Behat\ExtensionDriverLocator\DriverLocator;
+use Bex\Behat\ExtensionDriverLocator\DriverNodeBuilder;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Bex\Behat\ExtensionDriverLocator\DriverLocator;
-use Bex\Behat\ExtensionDriverLocator\DriverNodeBuilder;
 
 /**
  * This class is the entry point of the screenshot extension
@@ -21,14 +22,6 @@ use Bex\Behat\ExtensionDriverLocator\DriverNodeBuilder;
  */
 final class ScreenshotExtension implements Extension
 {
-    const DRIVER_NAMESPACE = 'Bex\\Behat\\ScreenshotExtension\\Driver';
-    const DRIVER_PARENT = 'Bex\\Behat\\ScreenshotExtension\\Driver\\ImageDriverInterface';
-
-    /**
-     * @var DriverLocator
-     */
-    private $driverLocator;
-
     /**
      * @var DriverNodeBuilder
      */
@@ -39,8 +32,10 @@ final class ScreenshotExtension implements Extension
      */
     public function __construct()
     {
-        $this->driverLocator = DriverLocator::getInstance(self::DRIVER_NAMESPACE, self::DRIVER_PARENT);
-        $this->driverNodeBuilder = DriverNodeBuilder::getInstance(self::DRIVER_NAMESPACE, self::DRIVER_PARENT);
+        $this->driverNodeBuilder = DriverNodeBuilder::getInstance(
+            Config::IMAGE_DRIVER_NAMESPACE,
+            Config::IMAGE_DRIVER_PARENT
+        );
     }
 
     /**
@@ -48,7 +43,7 @@ final class ScreenshotExtension implements Extension
      */
     public function getConfigKey()
     {
-        return 'screenshot';
+        return Config::EXTENSION_CONFIG_KEY;
     }
 
     /**
@@ -72,21 +67,8 @@ final class ScreenshotExtension implements Extension
      */
     public function configure(ArrayNodeDefinition $builder)
     {
-        $builder
-            ->children()
-                ->booleanNode('enabled')
-                    ->defaultTrue()
-                ->end()
-                ->booleanNode('record_all_steps')
-                    ->defaultFalse()
-                    ->validate()
-                        ->ifTrue($this->getImageMagickValidator())
-                        ->thenInvalid('Imagemagick PHP extension is required, but not installed.')
-                    ->end()
-                ->end()
-            ->end();
-
-        $this->driverNodeBuilder->buildDriverNodes($builder, 'active_image_drivers', 'image_drivers', ['local']);
+        $this->configureExtensionParams($builder);
+        $this->configureDriverParams($builder);
     }
 
     /**
@@ -94,36 +76,39 @@ final class ScreenshotExtension implements Extension
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        if ($config['enabled']) {
-            $this->loadExtension($container, $config);
+        $extensionConfig = new Config($config);
+        
+        if ($extensionConfig->isEnabled()) {
+            $extensionConfig->loadServices($container);
+            $container->set(Config::CONFIG_CONTAINER_ID, $extensionConfig);
         }
     }
 
-    /**
-     * @param  ContainerBuilder $container
-     * @param array $config
-     */
-    private function loadExtension(ContainerBuilder $container, array $config)
+    private function configureExtensionParams(ArrayNodeDefinition $builder)
     {
-        $this->registerServices($container);
-        $drivers = $this->driverLocator->findDrivers($container, $config['active_image_drivers'], $config['image_drivers']);
-        $container->setParameter('bex.screenshot_extension.active_image_drivers', $drivers);
-        $container->setParameter('bex.screenshot_extension.record_all_steps', $config['record_all_steps']);
+        $builder
+            ->children()
+                ->booleanNode(Config::CONFIG_PARAM_EXTENSTION_ENABLED)
+                    ->defaultTrue()
+                ->end()
+                ->enumNode(Config::CONFIG_PARAM_SCREENSHOT_TAKING_MODE)
+                    ->values(Config::getScreenshotTakingModes())
+                    ->defaultValue(Config::DEFAULT_SCREENSHOT_TAKING_MODE)
+                    ->validate()
+                        ->ifTrue(Config::getScreenshotTakingModeValidator())
+                        ->thenInvalid(Config::ERROR_MESSAGE_IMAGICK_NOT_FOUND)
+                    ->end()
+                ->end()
+            ->end();
     }
 
-    /**
-     * @param  ContainerBuilder $container
-     */
-    private function registerServices(ContainerBuilder $container)
+    private function configureDriverParams(ArrayNodeDefinition $builder)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/config'));
-        $loader->load('services.xml');
-    }
-
-    private function getImageMagickValidator()
-    {
-        return function ($enabled) {
-            return $enabled && !class_exists('\Imagick');
-        };
+        $this->driverNodeBuilder->buildDriverNodes(
+            $builder,
+            Config::CONFIG_PARAM_ACTIVE_IMAGE_DRIVERS,
+            Config::CONFIG_PARAM_IMAGE_DRIVER_CONFIGS,
+            [Config::DEFAULT_IMAGE_DRIVER_KEY]
+        );
     }
 }

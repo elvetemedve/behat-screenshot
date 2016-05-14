@@ -1,15 +1,11 @@
 <?php
 
-
 namespace Bex\Behat\ScreenshotExtension\Service;
+
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
-/**
- * Short description about the class
- *
- */
 class ScreenshotUploader
 {
     /**
@@ -17,18 +13,28 @@ class ScreenshotUploader
      */
     private $output;
 
-    /** @var ImageDriverInterface[] $imageDrivers */
-    private $imageDrivers;
+    /**
+     * @var Config
+     */
+    private $config;
 
-    public function __construct(OutputInterface $output, array $imageDrivers)
+    /**
+     * @param OutputInterface $output
+     * @param Config          $config
+     */
+    public function __construct(OutputInterface $output, Config $config)
     {
         $this->output = $output;
-        $this->imageDrivers = $imageDrivers;
+        $this->config = $config;
     }
 
+    /**
+     * @param  string $screenshot
+     * @param  string $fileName
+     */
     public function upload($screenshot, $fileName = 'failure.png')
     {
-        foreach ($this->imageDrivers as $imageDriver) {
+        foreach ($this->config->getImageDrivers() as $imageDriver) {
             $imageUrl = $imageDriver->upload($screenshot, $fileName);
             $this->printImageLocation($imageUrl);
         }
@@ -39,12 +45,9 @@ class ScreenshotUploader
      */
     private function printImageLocation($imageUrl)
     {
-        $message = sprintf(
-            '<comment>Screenshot has been taken. Open image at <error>%s</error></comment>',
-            $imageUrl
+        $this->output->writeln(
+            sprintf('<comment>Screenshot has been taken. Open image at <error>%s</error></comment>', $imageUrl),
+            $this->output->isDecorated() ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_PLAIN
         );
-        $options = $this->output->isDecorated() ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_PLAIN;
-
-        $this->output->writeln($message, $options);
     }
 }

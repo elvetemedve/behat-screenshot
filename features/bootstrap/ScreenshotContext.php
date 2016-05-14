@@ -128,8 +128,9 @@ class ScreenshotContext implements SnippetAcceptingContext
     {
         $imageFilename = $this->substituteParameters($imageFilename);
         $this->iShouldHaveTheImageFile($imageFilename);
-        $this->imageFileSizes[$stepCount] = filesize($imageFilename);
-        if ($stepCount == 2 && $this->imageFileSizes[1] * 2 == $this->imageFileSizes[$stepCount]) {
+        list($width, $height) = getimagesize($imageFilename);
+        $this->imageFileSizes[$stepCount] = $height;
+        if ($this->imageFileSizes[1] * $stepCount !== $this->imageFileSizes[$stepCount]) {
             throw new RuntimeException(sprintf('The image %s does not contain %d steps.', $imageFilename, $stepCount));
         }
     }
