@@ -75,8 +75,8 @@ Feature: Taking screenshot
       """
     When I run Behat
     Then I should see a failing test
-    And I should see the message "Screenshot has been taken. Open image at %temp-dir%/behat-screenshot/failure_features_feature_feature_2.png"
-    And I should have the image file "%temp-dir%/behat-screenshot/failure_features_feature_feature_2.png"
+    And I should see the message "Screenshot has been taken. Open image at %temp-dir%/behat-screenshot/features_feature_feature_2.png"
+    And I should have the image file "%temp-dir%/behat-screenshot/features_feature_feature_2.png"
 
   Scenario: Save screenshot into a custom local directory
     Given I have the configuration:
@@ -98,8 +98,8 @@ Feature: Taking screenshot
       """
     When I run Behat
     Then I should see a failing test
-    And I should see the message "Screenshot has been taken. Open image at /tmp/behat-screenshot-custom/failure_features_feature_feature_2.png"
-    And I should have the image file "/tmp/behat-screenshot-custom/failure_features_feature_feature_2.png"
+    And I should see the message "Screenshot has been taken. Open image at /tmp/behat-screenshot-custom/features_feature_feature_2.png"
+    And I should have the image file "/tmp/behat-screenshot-custom/features_feature_feature_2.png"
 
   Scenario: Save screenshot using external driver
     Given I have the configuration:
@@ -154,4 +154,4 @@ Feature: Taking screenshot
     And I have an image "dummy.png" file in "/tmp/behat-screenshot-custom/" directory
     When I run Behat
     Then I should see a failing test
-    And the only file in "/tmp/behat-screenshot-custom/" directory should be "/tmp/behat-screenshot-custom/failure_features_feature_feature_2.png"
+    And the only file in "/tmp/behat-screenshot-custom/" directory should be "/tmp/behat-screenshot-custom/features_feature_feature_2.png"

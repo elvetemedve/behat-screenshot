@@ -22,6 +22,8 @@ Feature: Taking screenshot
     When I run Behat
     Then I should see the message 'Permissible values: "failed_steps", "failed_scenarios", "all_scenarios"'
 
+    # We are not able to test this scenario on hhvm, because imagick can't be disabled
+    @skiphhvm
     Scenario: It reports an error when ImageMagick is not installed
       Given I have the configuration:
         """
@@ -40,7 +42,9 @@ Feature: Taking screenshot
         """
       When I run Behat
       Then I should see the message "Imagemagick PHP extension is required, but not installed."
-
+  
+  # imagick is not up-to-date on hhvm
+  @skiphhvm
   Scenario: It creates a combined screenshot of multiple steps if the scenario fails
     Given I have a web server running on host "localhost" and port "8080"
     And I have the file "index.html" in document root:
@@ -115,9 +119,11 @@ Feature: Taking screenshot
             screenshot_taking_mode: failed_scenarios
       """
     When I run Behat with PHP CLI arguments "-d extension=imagick.so"
-    Then I should have "%temp-dir%/behat-screenshot/failure_features_feature_feature_2.png" image containing 1 step
-    And I should have "%temp-dir%/behat-screenshot/failure_features_feature_feature_4.png" image containing 2 steps
+    Then I should have "%temp-dir%/behat-screenshot/features_feature_feature_2.png" image containing 1 step
+    And I should have "%temp-dir%/behat-screenshot/features_feature_feature_4.png" image containing 2 steps
 
+  # imagick is not up-to-date on hhvm
+  @skiphhvm
   Scenario: It creates a combined screenshots for all screnarios
     Given I have a web server running on host "localhost" and port "8080"
     And I have the file "index.html" in document root:
@@ -196,6 +202,6 @@ Feature: Taking screenshot
             screenshot_taking_mode: all_scenarios
       """
     When I run Behat with PHP CLI arguments "-d extension=imagick.so"
-    Then I should have "%temp-dir%/behat-screenshot/failure_features_feature_feature_2.png" image containing 1 step
-    And I should have "%temp-dir%/behat-screenshot/failure_features_feature_feature_4.png" image containing 2 steps
-    And I should have "%temp-dir%/behat-screenshot/failure_features_feature_feature_8.png" image containing 3 steps
+    Then I should have "%temp-dir%/behat-screenshot/features_feature_feature_2.png" image containing 1 step
+    And I should have "%temp-dir%/behat-screenshot/features_feature_feature_4.png" image containing 2 steps
+    And I should have "%temp-dir%/behat-screenshot/features_feature_feature_8.png" image containing 3 steps

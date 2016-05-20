@@ -13,11 +13,15 @@ cache:
 
 before_install:
   - composer self-update
+  - bash -c '[ ${TRAVIS_PHP_VERSION} == "hhvm" ] || printf "\n" | pecl install imagick'
 
 install:
   - composer install --no-interaction --prefer-source
 
+before_script:
+  - bash -c '[ ${TRAVIS_PHP_VERSION} == "hhvm" ]' || sed -i 's/extension="imagick.so"//g' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 script:
   - bin/phpspec run --no-interaction --format=pretty
   - bin/phantomjs --webdriver=4444 &
-  - bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty --profile=travis-ci
+  - bash -c '[ ${TRAVIS_PHP_VERSION} == "hhvm" ]' && bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty --profile=travis-ci --tags='~@skiphhvm' || bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty --profile=travis-ci

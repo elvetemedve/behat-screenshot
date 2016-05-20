@@ -4,6 +4,7 @@ namespace spec\Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,9 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ScreenshotTakerSpec extends ObjectBehavior
 {
-    function let(Mink $mink, OutputInterface $output, Session $session)
+    function let(Mink $mink, OutputInterface $output, Config $config, Session $session)
     {
-        $this->beConstructedWith($mink, $output);
+        $this->beConstructedWith($mink, $output, $config);
 
         $this->initializeOutputStub($output);
         $this->initializeMinkStub($mink, $session);

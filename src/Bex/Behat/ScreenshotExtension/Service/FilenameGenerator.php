@@ -13,7 +13,6 @@ use Behat\Gherkin\Node\StepNode;
  */
 class FilenameGenerator
 {
-    const FILE_NAME_PREFIX = 'failure';
 
     /**
      * @var string
@@ -38,7 +37,7 @@ class FilenameGenerator
     {
         $feature = $this->relativizePaths($featureNode->getFile());
         $line = $scenarioNode->getLine();
-        $fileName = join('_', [self::FILE_NAME_PREFIX, $feature, $line]);
+        $fileName = join('_', [$feature, $line]);
         return preg_replace('/[^A-Za-z0-9\-]/', '_', mb_strtolower($fileName)) . '.png';
     }
 
