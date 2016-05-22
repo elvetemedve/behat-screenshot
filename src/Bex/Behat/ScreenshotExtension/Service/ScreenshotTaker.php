@@ -4,6 +4,7 @@ namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -19,53 +20,82 @@ class ScreenshotTaker
     /** @var OutputInterface $output */
     private $output;
 
-    /** @var ImageDriverInterface[] $imageDrivers */
-    private $imageDrivers;
+    /**
+     * @var array $screenshots
+     */
+    private $screenshots;
 
     /**
-     * Constructor
-     *
-     * @param Mink $mink
-     * @param OutputInterface $output
-     * @param ImageDriverInterface[] $imageDrivers
+     * @var Config $config
      */
-    public function __construct(Mink $mink, OutputInterface $output, array $imageDrivers)
+    private $config;
+
+    /**
+     * @param Mink            $mink
+     * @param OutputInterface $output
+     * @param Config          $config
+     */
+    public function __construct(Mink $mink, OutputInterface $output, Config $config)
     {
         $this->mink = $mink;
         $this->output = $output;
-        $this->imageDrivers = $imageDrivers;
+        $this->config = $config;
     }
 
     /**
-     * Save the screenshot as the given filename
-     *
-     * @param string $fileName
+     * Save the screenshot into a local buffer
      */
-    public function takeScreenshot($fileName = 'failure.png')
+    public function takeScreenshot()
     {
         try {
-            $screenshot = $this->mink->getSession()->getScreenshot();
-            
-            foreach ($this->imageDrivers as $imageDriver) {
-                $imageUrl = $imageDriver->upload($screenshot, $fileName);
-                $this->printImageLocation($imageUrl);
-            }
+            $this->screenshots[] = $this->mink->getSession()->getScreenshot();
         } catch (\Exception $e) {
             $this->output->writeln($e->getMessage());
         }        
     }
 
     /**
-     * @param string $imageUrl
+     * @return string
      */
-    private function printImageLocation($imageUrl)
+    public function getImage()
     {
-        $message = sprintf(
-            '<comment>Screenshot has been taken. Open image at <error>%s</error></comment>',
-            $imageUrl
-        );
-        $options = $this->output->isDecorated() ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_PLAIN;
-        
-        $this->output->writeln($message, $options);
+        return $this->config->shouldCombineImages() ? $this->getCombinedImage() : $this->getLastImage();
+    }
+    
+    /**
+     * @return string
+     */
+    private function getCombinedImage()
+    {
+        $im = new \Imagick();
+
+        foreach ($this->screenshots as $screenshot) {
+            $im->readImageBlob($screenshot);
+        }
+
+        /* Append the images into one */
+        $im->resetIterator();
+        $combined = $im->appendImages(true);
+
+        /* Output the image */
+        $combined->setImageFormat("png");
+
+        return (string) $combined;
+    }
+
+    /**
+     * @return string
+     */
+    private function getLastImage()
+    {
+        return end($this->screenshots);
+    }
+
+    /**
+     * Remove previous images
+     */
+    public function reset()
+    {
+        $this->screenshots = [];
     }
 }

@@ -4,7 +4,7 @@ namespace spec\Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
-use Bex\Behat\ScreenshotExtension\Driver\Local;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,9 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ScreenshotTakerSpec extends ObjectBehavior
 {
-    function let(Mink $mink, OutputInterface $output, Local $localImageDriver, Session $session)
+    function let(Mink $mink, OutputInterface $output, Config $config, Session $session)
     {
-        $this->beConstructedWith($mink, $output, [$localImageDriver]);
+        $this->beConstructedWith($mink, $output, $config);
 
         $this->initializeOutputStub($output);
         $this->initializeMinkStub($mink, $session);
@@ -30,28 +30,20 @@ class ScreenshotTakerSpec extends ObjectBehavior
         $this->shouldHaveType('Bex\Behat\ScreenshotExtension\Service\ScreenshotTaker');
     }
 
-    function it_should_call_the_image_upload_with_correct_params(Local $localImageDriver)
+    function it_takes_screenshot(Session $session)
     {
-        $localImageDriver->upload('binary-image', 'test.png')->shouldBeCalled();
+        $session->getScreenshot()->shouldBeCalled();
 
-        $this->takeScreenshot('test.png');
+        $this->takeScreenshot();
     }
 
-    function it_should_print_coloured_message_by_default(OutputInterface $output)
+    function it_reports_errors_on_screen(OutputInterface $output, Session $session)
     {
-        $output->writeln(Argument::containingString('<comment>'), OutputInterface::OUTPUT_NORMAL)->shouldBeCalled();
+        $output->writeln(Argument::cetera())->shouldBeCalled();
 
-        $this->takeScreenshot('test.png');
-    }
+        $session->getScreenshot()->willThrow(new \Exception());
 
-    function it_should_not_return_coloured_message_when_ansi_mode_is_disabled(OutputInterface $output)
-    {
-        $output->isDecorated()->willReturn(false);
-
-        $output->writeln(Argument::type('string'), OutputInterface::OUTPUT_NORMAL)->shouldNotBeCalled();
-        $output->writeln(Argument::type('string'), OutputInterface::OUTPUT_PLAIN)->shouldBeCalled();
-
-        $this->takeScreenshot('test.png');
+        $this->takeScreenshot();
     }
 
     private function initializeOutputStub(OutputInterface $output)

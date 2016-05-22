@@ -17,6 +17,9 @@ class ScreenshotContext implements SnippetAcceptingContext
     /** @var TestRunnerContext $testRunnerContext */
     private $testRunnerContext;
 
+    /** @var array $imageFileSizes */
+    private $imageFileSizes;
+
     /**
      * @BeforeScenario
      */
@@ -116,6 +119,20 @@ class ScreenshotContext implements SnippetAcceptingContext
     private function substituteParameters($text)
     {
         return str_replace('%temp-dir%', sys_get_temp_dir(), $text);
+    }
+
+    /**
+     * @Then /^I should have "([^"]*)" image containing (\d+) step[s]?$/
+     */
+    public function iShouldHaveImageContainingStep($imageFilename, $stepCount)
+    {
+        $imageFilename = $this->substituteParameters($imageFilename);
+        $this->iShouldHaveTheImageFile($imageFilename);
+        list($width, $height) = getimagesize($imageFilename);
+        $this->imageFileSizes[$stepCount] = $height;
+        if ($this->imageFileSizes[1] * $stepCount !== $this->imageFileSizes[$stepCount]) {
+            throw new RuntimeException(sprintf('The image %s does not contain %d steps.', $imageFilename, $stepCount));
+        }
     }
 
     /**
