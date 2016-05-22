@@ -5,7 +5,7 @@ Behat-ScreenshotExtension
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/build.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/build-status/master)
 [![Build Status](https://travis-ci.org/elvetemedve/behat-screenshot.svg?branch=master)](https://travis-ci.org/elvetemedve/behat-screenshot)
-[![HHVM Status](http://hhvm.h4cc.de/badge/bex/behat-screenshot.svg?style=flat)](http://hhvm.h4cc.de/package/bex/behat-screenshot)
+[![HHVM Status](http://hhvm.h4cc.de/badge/bex/behat-screenshot.svg?style=flat)](http://hhvm.h4cc.de/package/bex/behat-screenshot) <sup>[1]</sup>
 
 Behat-ScreenshotExtension helps you debug Behat scenarios by taking screenshot of the failing steps.
 
@@ -70,6 +70,18 @@ default:
           #... custom driver config goes here ...
 ```
 
+You can make a combined screenshot including previous steps:
+```yml
+default:
+  extensions:
+    Bex\Behat\ScreenshotExtension:
+      screenshot_taking_mode: failed_scenarios
+        # Available modes:
+        #  - failed_steps: Image contains only the screenshot of the failed step. [Default]
+        #  - failed_scenarios: Image contains screenshots of all steps in a failed scenario.
+        #  - all_scenarios: Each scenario has a combined image created, regardless of failing or passing.
+```
+
 You can disable the extension by removing from the behat.yml or you can disable it for a profile by using the `enabled` parameter, e.g.:
 ```yml
 ci:
@@ -106,3 +118,8 @@ How to create your own image driver
 Thats it!
 
 See example here: https://github.com/tkotosz/behat-screenshot-image-driver-dummy
+
+Footnotes
+---------
+
+[1]: Some of the features are not tested. See **@skiphhvm** tags in _*.feature_ files.
