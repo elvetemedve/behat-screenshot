@@ -113,7 +113,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
         $this->takeScreenshot($event);
     }
 
-    function it_generates_filename(
+    function it_generates_filename_and_saves_screenshot(
         ScreenshotTaker $screenshotTaker,
         ScreenshotUploader $screenshotUploader,
         FilenameGenerator $filenameGenerator,
@@ -122,8 +122,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
         ScenarioNode $scenario,
         TestResult $result,
         Teardown $tearDown
-    )
-    {
+    ) {
         $event = new AfterScenarioTested(
             $env->getWrappedObject(),
             $feature->getWrappedObject(),
@@ -133,9 +132,37 @@ class ScreenshotListenerSpec extends ObjectBehavior
         );
         $result->getResultCode()->willReturn(TestResult::FAILED);
         $filenameGenerator->generateFileName($feature, $scenario)->willReturn('test.jpg')->shouldBeCalled();
+        $screenshotTaker->hasScreenshot()->willReturn(true)->shouldBeCalled();
         $screenshotTaker->reset()->willReturn(null)->shouldBeCalled();
         $screenshotTaker->getImage()->willReturn(null)->shouldBeCalled();
         $screenshotUploader->upload(Argument::any(), 'test.jpg')->shouldBeCalled();
+
+        $this->saveScreenshot($event);
+    }
+
+    function it_does_not_save_screenshot_if_there_isnt_any(
+        ScreenshotTaker $screenshotTaker,
+        ScreenshotUploader $screenshotUploader,
+        FilenameGenerator $filenameGenerator,
+        Environment $env,
+        FeatureNode $feature,
+        ScenarioNode $scenario,
+        TestResult $result,
+        Teardown $tearDown
+    ) {
+        $event = new AfterScenarioTested(
+            $env->getWrappedObject(),
+            $feature->getWrappedObject(),
+            $scenario->getWrappedObject(),
+            $result->getWrappedObject(),
+            $tearDown->getWrappedObject()
+        );
+        $result->getResultCode()->willReturn(TestResult::FAILED);
+        $screenshotTaker->hasScreenshot()->willReturn(false)->shouldBeCalled();
+        $filenameGenerator->generateFileName($feature, $scenario)->shouldNotBeCalled();
+        $screenshotTaker->getImage()->shouldNotBeCalled();
+        $screenshotUploader->upload(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $screenshotTaker->reset()->willReturn(null)->shouldBeCalled();
 
         $this->saveScreenshot($event);
     }

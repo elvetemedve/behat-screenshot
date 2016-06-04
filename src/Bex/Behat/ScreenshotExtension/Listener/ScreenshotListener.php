@@ -115,9 +115,10 @@ final class ScreenshotListener implements EventSubscriberInterface
      */
     private function shouldSaveScreenshot(AfterTested $event)
     {
+        $hasScreenshot = $this->screenshotTaker->hasScreenshot();
         $isScanerioFailed = $event->getTestResult()->getResultCode() === TestResult::FAILED;
         $shouldRecordAllScenarios = $this->config->shouldRecordAllScenarios();
 
-        return $isScanerioFailed || $shouldRecordAllScenarios;      
+        return $hasScreenshot && ($isScanerioFailed || $shouldRecordAllScenarios);
     }
 }

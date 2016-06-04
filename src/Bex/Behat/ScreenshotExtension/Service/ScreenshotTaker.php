@@ -40,6 +40,7 @@ class ScreenshotTaker
         $this->mink = $mink;
         $this->output = $output;
         $this->config = $config;
+        $this->screenshots = [];
     }
 
     /**
@@ -52,6 +53,14 @@ class ScreenshotTaker
         } catch (\Exception $e) {
             $this->output->writeln($e->getMessage());
         }        
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasScreenshot()
+    {
+        return !empty($this->screenshots);
     }
 
     /**

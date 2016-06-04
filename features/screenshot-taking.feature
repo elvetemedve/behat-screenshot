@@ -78,6 +78,59 @@ Feature: Taking screenshot
     And I should see the message "Screenshot has been taken. Open image at %temp-dir%/behat-screenshot/features_feature_feature_2.png"
     And I should have the image file "%temp-dir%/behat-screenshot/features_feature_feature_2.png"
 
+  Scenario: Don't save screenshot to local filesystem if there isn't any screenshot taken
+    Given I have the configuration:
+      """
+      default:
+        extensions:
+          Behat\MinkExtension:
+            base_url: 'http://localhost:8080'
+            sessions:
+              default:
+                selenium2:
+                  wd_host: http://localhost:4444/wd/hub
+                  browser: phantomjs
+
+          Bex\Behat\ScreenshotExtension: ~
+      """
+    And I have the context:
+      """
+      <?php
+      use Behat\MinkExtension\Context\RawMinkContext;
+      class FeatureContext extends RawMinkContext
+      {
+          /**
+           * @Given I have a step
+           */
+          function passingStep()
+          {
+            $this->visitPath('index.html');
+          }
+          /**
+           * @When I have a failing step
+           */
+          function failingStep()
+          {
+            throw new Exception('Error');
+          }
+          /**
+           * @Then I should have a skipped step
+           */
+          function skippedStep()
+          {}
+          /**
+           * @beforeStep
+           */
+          function doSomethingWrong()
+          {
+            throw new Exception('Error');
+          }
+      }
+      """
+    When I run Behat
+    Then I should see a failing test
+    And I should not see the message "Screenshot has been taken"
+
   Scenario: Save screenshot into a custom local directory
     Given I have the configuration:
       """
