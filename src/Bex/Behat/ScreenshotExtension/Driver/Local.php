@@ -15,6 +15,7 @@ class Local implements ImageDriverInterface
     const DEFAULT_DIRECTORY = 'behat-screenshot';
     const CONFIG_PARAM_SCREENSHOT_DIRECTORY = 'screenshot_directory';
     const CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY = 'clear_screenshot_directory';
+    const ERROR_MESSAGE_FINFO_NOT_FOUND = 'The fileinfo PHP extension is required, but not installed.';
 
     /**
      * @var Filesystem
@@ -41,11 +42,11 @@ class Local implements ImageDriverInterface
      * @param Finder $finder
      * @param \finfo $fileInfo
      */
-    public function __construct(Filesystem $filesystem = null, Finder $finder = null, \finfo $fileInfo = null)
+    public function __construct(Filesystem $filesystem = null, Finder $finder = null, $fileInfo = null)
     {
         $this->filesystem = $filesystem ?: new Filesystem();
         $this->finder = $finder ?: new Finder();
-        $this->fileInfo = $fileInfo ?: new \finfo();
+        $this->fileInfo = $fileInfo;
     }
 
     /**
@@ -60,9 +61,24 @@ class Local implements ImageDriverInterface
                 ->end()
                 ->booleanNode(self::CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY)
                     ->defaultValue(false)
+                    ->validate()
+                        ->ifTrue($this->getClearScreenshotDirectoryFeatureValidator())
+                        ->thenInvalid(self::ERROR_MESSAGE_FINFO_NOT_FOUND)
+                    ->end()
                 ->end()
             ->end();
     }
+
+    /**
+     * @return \Closure
+     */
+    private function getClearScreenshotDirectoryFeatureValidator()
+    {
+        return function ($isFeatureEnabled) {
+            return $isFeatureEnabled && !class_exists('\finfo');
+        };
+    }
+
 
     /**
      * @param  ContainerBuilder $container
@@ -73,6 +89,7 @@ class Local implements ImageDriverInterface
         $this->screenshotDirectory = $config[self::CONFIG_PARAM_SCREENSHOT_DIRECTORY];
 
         if ($config[self::CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY]) {
+            $this->fileInfo = $this->fileInfo ?: new \finfo();
             $this->clearScreenshotDirectory();
         }
     }

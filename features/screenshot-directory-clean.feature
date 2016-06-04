@@ -1,8 +1,4 @@
-Feature: Taking screenshot
-  In order to debug failing scenarios more easily
-  As a developer
-  I should see a screenshot of the browser window of the failing step
-
+Feature: Cleanup screenshot folder before scanerio
   Background:
     Given I have the file "index.html" in document root:
       """
@@ -58,7 +54,9 @@ Feature: Taking screenshot
       }
       """
 
-  Scenario: Save screenshot to local filesystem
+  # fileinfo only needs to be installed separately on windows
+  @windows
+  Scenario: It reports an error when fileinfo is not installed
     Given I have the configuration:
       """
       default:
@@ -71,14 +69,16 @@ Feature: Taking screenshot
                   wd_host: http://localhost:4444/wd/hub
                   browser: phantomjs
 
-          Bex\Behat\ScreenshotExtension: ~
+          Bex\Behat\ScreenshotExtension:
+            image_drivers:
+              local:
+                screenshot_directory: /tmp/behat-screenshot-custom/
+                clear_screenshot_directory: true
       """
     When I run Behat
-    Then I should see a failing test
-    And I should see the message "Screenshot has been taken. Open image at %temp-dir%/behat-screenshot/features_feature_feature_2.png"
-    And I should have the image file "%temp-dir%/behat-screenshot/features_feature_feature_2.png"
+    Then I should see the message "The fileinfo PHP extension is required, but not installed."
 
-  Scenario: Save screenshot into a custom local directory
+  Scenario: It doesn't clear local screenshot directory before running the tests if clear directory feature is disabled
     Given I have the configuration:
       """
       default:
@@ -96,12 +96,13 @@ Feature: Taking screenshot
               local:
                 screenshot_directory: /tmp/behat-screenshot-custom/
       """
-    When I run Behat
+    And I have an image "dummy.png" file in "/tmp/behat-screenshot-custom/" directory
+    When I run Behat with PHP CLI arguments "-d extension=fileinfo.so"
     Then I should see a failing test
-    And I should see the message "Screenshot has been taken. Open image at /tmp/behat-screenshot-custom/features_feature_feature_2.png"
     And I should have the image file "/tmp/behat-screenshot-custom/features_feature_feature_2.png"
+    And I should have the image file "/tmp/behat-screenshot-custom/dummy.png"
 
-  Scenario: Save screenshot using external driver
+  Scenario: Clear local screenshot directory before running the tests
     Given I have the configuration:
       """
       default:
@@ -115,19 +116,12 @@ Feature: Taking screenshot
                   browser: phantomjs
 
           Bex\Behat\ScreenshotExtension:
-            active_image_drivers: dummy
+            image_drivers:
+              local:
+                screenshot_directory: /tmp/behat-screenshot-custom/
+                clear_screenshot_directory: true
       """
+    And I have an image "dummy.png" file in "/tmp/behat-screenshot-custom/" directory
     When I run Behat
     Then I should see a failing test
-    And I should see the message "Screenshot has been taken. Open image at http://docs.behat.org/en/v2.5/_static/img/logo.png"
-
-  Scenario: Disable the extension
-    Given I have the configuration:
-      """
-      default:
-        extensions:
-          Bex\Behat\ScreenshotExtension:
-            enabled: false
-      """
-    When I run Behat
-    Then I should not see the message "Screenshot has been taken."
+    And the only file in "/tmp/behat-screenshot-custom/" directory should be "/tmp/behat-screenshot-custom/features_feature_feature_2.png"

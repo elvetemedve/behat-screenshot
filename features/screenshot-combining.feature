@@ -3,7 +3,7 @@ Feature: Taking screenshot
   As a developer
   I should see a screenshot of the browser window of the failing step
 
-  Scenario: It reports wrong configuration value
+  Scenario: It reports wrong configuration value for screenshot_taking_mode
     Given I have the configuration:
       """
       default:

@@ -1,6 +1,8 @@
 default:
   suites:
     default:
+      filters:
+        tags: "~@windows"
       contexts:
         - Bex\Behat\Context\TestRunnerContext:
             browserCommand: %paths.base%/bin/phantomjs --webdriver=4444
