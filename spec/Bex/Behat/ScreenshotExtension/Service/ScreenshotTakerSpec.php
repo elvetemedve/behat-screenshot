@@ -2,6 +2,8 @@
 
 namespace spec\Bex\Behat\ScreenshotExtension\Service;
 
+use Behat\Mink\Driver\DriverInterface;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
@@ -42,6 +44,17 @@ class ScreenshotTakerSpec extends ObjectBehavior
         $output->writeln(Argument::cetera())->shouldBeCalled();
 
         $session->getScreenshot()->willThrow(new \Exception());
+
+        $this->takeScreenshot();
+    }
+
+    function it_does_not_report_screenshot_taking_not_supported_errors_on_screen(
+        OutputInterface $output, Session $session, DriverInterface $driver
+    ) {
+        $output->writeln(Argument::cetera())->shouldNotBeCalled();
+
+        $driverInstance = $driver->getWrappedObject();
+        $session->getScreenshot()->willThrow(new UnsupportedDriverActionException('Message.', $driverInstance));
 
         $this->takeScreenshot();
     }
