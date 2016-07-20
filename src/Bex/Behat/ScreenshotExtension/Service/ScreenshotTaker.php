@@ -2,6 +2,7 @@
 
 namespace Bex\Behat\ScreenshotExtension\Service;
 
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Mink;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
@@ -50,6 +51,8 @@ class ScreenshotTaker
     {
         try {
             $this->screenshots[] = $this->mink->getSession()->getScreenshot();
+        } catch (UnsupportedDriverActionException $e) {
+            return;
         } catch (\Exception $e) {
             $this->output->writeln($e->getMessage());
         }        
