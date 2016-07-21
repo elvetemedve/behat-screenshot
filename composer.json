@@ -1,6 +1,6 @@
 {
     "name": "bex/behat-screenshot",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "type": "library",
     "description": "Extension for behat to help debug failing scenarios",
     "keywords": ["tdd","bdd","behat", "behat-screenshot"],
