@@ -52,7 +52,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
 
     function it_is_subscribed_for_after_example_event()
     {
-      $this->getSubscribedEvents()->shouldHaveKeyWithValue('tester.example_tested.after', 'saveScreenshot');
+        $this->getSubscribedEvents()->shouldHaveKeyWithValue('tester.example_tested.after', 'saveScreenshot');
     }
 
     function it_takes_a_screenshot_after_a_failed_step(
