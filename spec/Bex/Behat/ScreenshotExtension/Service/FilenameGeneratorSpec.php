@@ -3,7 +3,7 @@
 namespace spec\Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioNode;
+use Behat\Gherkin\Node\ScenarioInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -24,7 +24,7 @@ class FilenameGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType('Bex\Behat\ScreenshotExtension\Service\FilenameGenerator');
     }
 
-    function it_should_return_a_nice_filename(FeatureNode $featureNode, ScenarioNode $scenarioNode)
+    function it_should_return_a_nice_filename(FeatureNode $featureNode, ScenarioInterface $scenarioNode)
     {
         $featureNode->getFile()->willReturn('base-path/example.feature');
         $scenarioNode->getLine()->willReturn(42);
