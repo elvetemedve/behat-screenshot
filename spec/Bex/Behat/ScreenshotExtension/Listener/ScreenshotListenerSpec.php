@@ -6,7 +6,7 @@ use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
 use Behat\Behat\Tester\Result\StepResult;
 use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioNode;
+use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Gherkin\Node\StepNode;
 use Behat\Testwork\Environment\Environment;
 use Behat\Testwork\Tester\Result\TestResult;
@@ -48,6 +48,11 @@ class ScreenshotListenerSpec extends ObjectBehavior
     function it_is_subscribed_for_after_scenario_event()
     {
         $this->getSubscribedEvents()->shouldHaveKeyWithValue('tester.scenario_tested.after', 'saveScreenshot');
+    }
+
+    function it_is_subscribed_for_after_example_event()
+    {
+        $this->getSubscribedEvents()->shouldHaveKeyWithValue('tester.example_tested.after', 'saveScreenshot');
     }
 
     function it_takes_a_screenshot_after_a_failed_step(
@@ -119,7 +124,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
         FilenameGenerator $filenameGenerator,
         Environment $env,
         FeatureNode $feature,
-        ScenarioNode $scenario,
+        ScenarioInterface $scenario,
         TestResult $result,
         Teardown $tearDown
     ) {
@@ -146,7 +151,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
         FilenameGenerator $filenameGenerator,
         Environment $env,
         FeatureNode $feature,
-        ScenarioNode $scenario,
+        ScenarioInterface $scenario,
         TestResult $result,
         Teardown $tearDown
     ) {

@@ -4,6 +4,7 @@ namespace Bex\Behat\ScreenshotExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
+use Behat\Behat\EventDispatcher\Event\ExampleTested;
 use Behat\Behat\EventDispatcher\Event\ScenarioTested;
 use Behat\Behat\EventDispatcher\Event\StepTested;
 use Behat\Testwork\EventDispatcher\Event\AfterTested;
@@ -66,7 +67,8 @@ final class ScreenshotListener implements EventSubscriberInterface
     {
         return [
             StepTested::AFTER => 'takeScreenshot',
-            ScenarioTested::AFTER => 'saveScreenshot'
+            ScenarioTested::AFTER => 'saveScreenshot',
+            ExampleTested::AFTER => 'saveScreenshot',
         ];
     }
 
