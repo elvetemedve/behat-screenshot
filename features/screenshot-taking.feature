@@ -184,3 +184,62 @@ Feature: Taking screenshot
       """
     When I run Behat
     Then I should not see the message "Screenshot has been taken."
+
+  Scenario: Save screenshot to local filesystem if example fails
+    Given I have the configuration:
+      """
+      default:
+        extensions:
+          Behat\MinkExtension:
+            base_url: 'http://localhost:8080'
+            sessions:
+              default:
+                selenium2:
+                  wd_host: http://localhost:4444/wd/hub
+                  browser: phantomjs
+
+          Bex\Behat\ScreenshotExtension: ~
+      """
+    And I have the feature:
+      """
+      Feature: Multi-step feature
+      Scenario Outline: hopp
+        Given I have a <first> step
+        When I have a <second> step
+        Then I should have a <third> step
+
+        Examples:
+          | first | second | third |
+          | normal | failing | skipped |
+      """
+    And I have the context:
+      """
+      <?php
+      use Behat\MinkExtension\Context\RawMinkContext;
+      class FeatureContext extends RawMinkContext
+      {
+          /**
+           * @Given I have a normal step
+           */
+          function passingStep()
+          {
+            $this->visitPath('index.html');
+          }
+          /**
+           * @When I have a failing step
+           */
+          function failingStep()
+          {
+            throw new Exception('Error');
+          }
+          /**
+           * @Then I should have a skipped step
+           */
+          function skippedStep()
+          {}
+      }
+      """
+    When I run Behat
+    Then I should see a failing test
+    And I should see the message "Screenshot has been taken. Open image at %temp-dir%/behat-screenshot/features_feature_feature_9.png"
+    And I should have the image file "%temp-dir%/behat-screenshot/features_feature_feature_9.png"
