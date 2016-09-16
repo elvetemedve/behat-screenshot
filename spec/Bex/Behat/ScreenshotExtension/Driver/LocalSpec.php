@@ -30,6 +30,8 @@ class LocalSpec extends ObjectBehavior
         $files = [];
         $prophet = new Prophet;
 
+        $filesystem->exists('/path/to/screenshots/')->willReturn(true);
+
         foreach ($images as $image) {
             $splFileInfo = $prophet->prophesize('\SplFileInfo');
             $splFileInfo->getRealPath()->willReturn($image);
@@ -42,6 +44,19 @@ class LocalSpec extends ObjectBehavior
         $this->load($container, $config);
     }
 
+    function it_skips_cleaning_up_screenshot_directory_when_switch_is_on_and_directory_does_not_exist(
+        Filesystem $filesystem, ContainerBuilder $container
+    ) {
+        $config = $this->getDefaultConfig();
+        $config[Local::CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY] = true;
+
+        $filesystem->exists('/path/to/screenshots/')->willReturn(false);
+
+        $filesystem->remove(Argument::any())->shouldNotBeCalled();
+
+        $this->load($container, $config);
+    }
+
     function it_does_not_clean_up_screenshot_directory_when_switch_is_off(
         Filesystem $filesystem, Finder $finder, ContainerBuilder $container
     ) {
@@ -50,6 +65,8 @@ class LocalSpec extends ObjectBehavior
         $images = ['a.png', 'b.png'];
         $files = [];
         $prophet = new Prophet;
+
+        $filesystem->exists('/path/to/screenshots/')->willReturn(true);
 
         foreach ($images as $image) {
             $splFileInfo = $prophet->prophesize('\SplFileInfo');
@@ -72,6 +89,8 @@ class LocalSpec extends ObjectBehavior
         $nonImages = ['c.png', 'd.txt'];
         $files = [];
         $prophet = new Prophet;
+
+        $filesystem->exists('/path/to/screenshots/')->willReturn(true);
 
         foreach (array_merge($images, $nonImages) as $filename) {
             $splFileInfo = $prophet->prophesize('\SplFileInfo');
