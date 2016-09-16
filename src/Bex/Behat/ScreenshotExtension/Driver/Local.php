@@ -146,6 +146,10 @@ class Local implements ImageDriverInterface
 
     private function clearScreenshotDirectory()
     {
+        if (!$this->filesystem->exists($this->getTargetPath(''))) {
+            return;
+        }
+
         $filesToDelete = [];
 
         /** @var SplFileInfo $file */
