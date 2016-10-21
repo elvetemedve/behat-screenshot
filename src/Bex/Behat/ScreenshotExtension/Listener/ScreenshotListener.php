@@ -83,7 +83,7 @@ final class ScreenshotListener implements EventSubscriberInterface
             $this->screenshotTaker->takeScreenshot();
 
             if (!$this->config->shouldCombineImages()) {
-                $fileName = $this->filenameGenerator->generateFileName($event->getFeature(), $event->getScenario());
+                $fileName = $this->filenameGenerator->generateFileName($event->getFeature(), $event->getNode());
                 $image = $this->screenshotTaker->getImage();
                 $this->screenshotUploader->upload($image, $fileName);
                 $this->screenshotTaker->reset();
