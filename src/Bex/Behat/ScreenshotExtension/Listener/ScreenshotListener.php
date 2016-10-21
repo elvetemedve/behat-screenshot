@@ -81,11 +81,18 @@ final class ScreenshotListener implements EventSubscriberInterface
     {
         if ($this->shouldTakeScreenshot($event)) {
             $this->screenshotTaker->takeScreenshot();
+
+            if (!$this->config->shouldCombineImages()) {
+                $fileName = $this->filenameGenerator->generateFileName($event->getFeature(), $event->getScenario());
+                $image = $this->screenshotTaker->getImage();
+                $this->screenshotUploader->upload($image, $fileName);
+                $this->screenshotTaker->reset();
+            }
         }
     }
     
     /**
-     * Save screenshot after scanerio if required
+     * Save screenshot after scenario if required
      * 
      * @param  AfterScenarioTested $event
      */
@@ -107,7 +114,10 @@ final class ScreenshotListener implements EventSubscriberInterface
      */
     private function shouldTakeScreenshot(AfterTested $event)
     {
-        return $event->getTestResult()->getResultCode() !== TestResult::SKIPPED;
+        $isScenarioFailed = $event->getTestResult()->getResultCode() === TestResult::FAILED;
+        $shouldRecordAllScenarios = $this->config->shouldRecordAllScenarios();
+
+        return $isScenarioFailed || $shouldRecordAllScenarios;
     }
 
     /**
