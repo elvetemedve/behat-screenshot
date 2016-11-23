@@ -105,6 +105,14 @@ class Config
     }
 
     /**
+     * @return boolean
+     */
+    public function shouldRecordAllSteps()
+    {
+        return $this->screenshotTakingMode != self::SCREENSHOT_TAKING_MODE_FAILED_STEPS;
+    }
+
+    /**
      * Init service container and load image drivers
      * 
      * @param  ContainerBuilder $container
