@@ -77,6 +77,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
     }
 
     function it_takes_a_screenshot_after_a_passed_step(
+        Config $config,
         ScreenshotTaker $screenshotTaker,
         Environment $env,
         FeatureNode $feature,
@@ -91,8 +92,32 @@ class ScreenshotListenerSpec extends ObjectBehavior
             $result->getWrappedObject(),
             $tearDown->getWrappedObject()
         );
+        $config->shouldRecordAllSteps()->willReturn(true);
         $result->getResultCode()->willReturn(TestResult::PASSED);
         $screenshotTaker->takeScreenshot()->shouldBeCalled();
+
+        $this->takeScreenshot($event);
+    }
+
+    function it_does_not_take_a_screenshot_after_a_passed_step_if_not_enabled(
+        Config $config,
+        ScreenshotTaker $screenshotTaker,
+        Environment $env,
+        FeatureNode $feature,
+        StepNode $step,
+        StepResult $result,
+        Teardown $tearDown
+    ) {
+        $event = new AfterStepTested(
+            $env->getWrappedObject(),
+            $feature->getWrappedObject(),
+            $step->getWrappedObject(),
+            $result->getWrappedObject(),
+            $tearDown->getWrappedObject()
+        );
+        $config->shouldRecordAllSteps()->willReturn(false);
+        $result->getResultCode()->willReturn(TestResult::PASSED);
+        $screenshotTaker->takeScreenshot()->shouldNotBeCalled();
 
         $this->takeScreenshot($event);
     }

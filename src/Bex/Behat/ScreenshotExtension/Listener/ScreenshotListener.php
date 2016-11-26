@@ -107,7 +107,11 @@ final class ScreenshotListener implements EventSubscriberInterface
      */
     private function shouldTakeScreenshot(AfterTested $event)
     {
-        return $event->getTestResult()->getResultCode() !== TestResult::SKIPPED;
+        $isStepFailed = $event->getTestResult()->getResultCode() == TestResult::FAILED;
+        $isStepSkipped = $event->getTestResult()->getResultCode() == TestResult::SKIPPED;
+        $shouldRecordAllSteps = $this->config->shouldRecordAllSteps();
+
+        return $isStepFailed || (!$isStepSkipped && $shouldRecordAllSteps);
     }
 
     /**
