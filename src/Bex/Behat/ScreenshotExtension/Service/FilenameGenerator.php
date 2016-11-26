@@ -4,7 +4,7 @@ namespace Bex\Behat\ScreenshotExtension\Service;
 
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioInterface;
-use Behat\Gherkin\Node\StepNode;
+use Behat\Gherkin\Node\NodeInterface;
 
 /**
  * This class generates a filename for the given Behat scenario step
@@ -33,7 +33,7 @@ class FilenameGenerator
      *
      * @return string
      */
-    public function generateFileName(FeatureNode $featureNode, ScenarioInterface $scenarioNode)
+    public function generateFileName(FeatureNode $featureNode, NodeInterface $scenarioNode)
     {
         $feature = $this->relativizePaths($featureNode->getFile());
         $line = $scenarioNode->getLine();
