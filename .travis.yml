@@ -13,6 +13,9 @@ cache:
 
 before_install:
   - composer self-update
+  - pear config-set preferred_state beta
+  - pecl channel-update pecl.php.net
+  - yes | pecl install imagick
 
 install:
   - composer install --no-interaction --prefer-source
