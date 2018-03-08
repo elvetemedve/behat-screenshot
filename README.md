@@ -5,7 +5,6 @@ Behat-ScreenshotExtension
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/badges/build.png?b=master)](https://scrutinizer-ci.com/g/elvetemedve/behat-screenshot/build-status/master)
 [![Build Status](https://travis-ci.org/elvetemedve/behat-screenshot.svg?branch=master)](https://travis-ci.org/elvetemedve/behat-screenshot)
-[![HHVM Status](http://hhvm.h4cc.de/badge/bex/behat-screenshot.svg?style=flat)](http://hhvm.h4cc.de/package/bex/behat-screenshot) <sup>[1]</sup>
 
 Behat-ScreenshotExtension helps you debug Behat scenarios by taking screenshot of the failing steps.
 
