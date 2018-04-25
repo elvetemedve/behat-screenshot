@@ -117,8 +117,3 @@ How to create your own image driver
 Thats it!
 
 See example here: https://github.com/tkotosz/behat-screenshot-image-driver-dummy
-
-Footnotes
----------
-
-[1]: Some of the features are not tested. See **@skiphhvm** tags in _*.feature_ files.
