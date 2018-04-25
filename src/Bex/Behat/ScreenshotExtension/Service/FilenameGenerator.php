@@ -2,6 +2,7 @@
 
 namespace Bex\Behat\ScreenshotExtension\Service;
 
+use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Gherkin\Node\StepNode;
@@ -28,13 +29,15 @@ class FilenameGenerator
     }
 
     /**
-     * @param  FeatureNode  $featureNode
-     * @param  ScenarioInterface $scenarioNode
+     * @param  AfterScenarioTested $event
      *
      * @return string
      */
-    public function generateFileName(FeatureNode $featureNode, ScenarioInterface $scenarioNode)
+    public function generateFileName(AfterScenarioTested $event)
     {
+        $featureNode = $event->getFeature();
+        $scenarioNode = $event->getScenario();
+        
         $feature = $this->relativizePaths($featureNode->getFile());
         $line = $scenarioNode->getLine();
         $fileName = join('_', [$feature, $line]);

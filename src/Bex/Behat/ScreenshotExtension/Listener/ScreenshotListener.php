@@ -92,7 +92,7 @@ final class ScreenshotListener implements EventSubscriberInterface
     public function saveScreenshot(AfterScenarioTested $event)
     {
         if ($this->shouldSaveScreenshot($event)) {
-            $fileName = $this->filenameGenerator->generateFileName($event->getFeature(), $event->getScenario());
+            $fileName = $this->filenameGenerator->generateFileName($event);
             $image = $this->screenshotTaker->getImage();
             $this->screenshotUploader->upload($image, $fileName);
         }
