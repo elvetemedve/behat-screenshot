@@ -20,6 +20,7 @@ class Config
     const CONFIG_PARAM_ACTIVE_IMAGE_DRIVERS = 'active_image_drivers';
     const CONFIG_PARAM_IMAGE_DRIVER_CONFIGS = 'image_drivers';
     const CONFIG_PARAM_SCREENSHOT_TAKING_MODE = 'screenshot_taking_mode';
+    const CONFIG_PARAM_SCREENSHOT_FILENAME_PATTERN = 'screenshot_filename_pattern';
 
     const SCREENSHOT_TAKING_MODE_FAILED_STEPS = 'failed_steps';
     const SCREENSHOT_TAKING_MODE_FAILED_SCENARIOS = 'failed_scenarios';
@@ -27,6 +28,8 @@ class Config
 
     const DEFAULT_IMAGE_DRIVER_KEY = 'local';
     const DEFAULT_SCREENSHOT_TAKING_MODE = self::SCREENSHOT_TAKING_MODE_FAILED_STEPS;
+
+    const DEFAULT_SCREENSHOT_FILENAME_PATTERN = '%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%';
 
     const ERROR_MESSAGE_IMAGICK_NOT_FOUND = 'Imagemagick PHP extension is required, but not installed.';
     
@@ -61,6 +64,11 @@ class Config
     private $imageDriverConfigs;
 
     /**
+     * @var string
+     */
+    private $screenshotFilenamePattern;
+
+    /**
      * @param array $config
      */
     public function __construct(array $config)
@@ -70,6 +78,7 @@ class Config
         $this->screenshotTakingMode = $config[self::CONFIG_PARAM_SCREENSHOT_TAKING_MODE];
         $this->imageDriverKeys = $config[self::CONFIG_PARAM_ACTIVE_IMAGE_DRIVERS];
         $this->imageDriverConfigs = $config[self::CONFIG_PARAM_IMAGE_DRIVER_CONFIGS];
+        $this->screenshotFilenamePattern = $config[self::CONFIG_PARAM_SCREENSHOT_FILENAME_PATTERN];
     }
 
     /**
@@ -110,6 +119,14 @@ class Config
     public function shouldRecordAllSteps()
     {
         return $this->screenshotTakingMode != self::SCREENSHOT_TAKING_MODE_FAILED_STEPS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScreenshotFilenamePattern()
+    {
+        return $this->screenshotFilenamePattern;
     }
 
     /**

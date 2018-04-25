@@ -6,8 +6,10 @@ use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Testwork\Environment\Environment;
+use Behat\Testwork\Suite\Suite;
 use Behat\Testwork\Tester\Result\TestResult;
 use Behat\Testwork\Tester\Setup\Teardown;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -18,9 +20,9 @@ use Prophecy\Argument;
  */
 class FilenameGeneratorSpec extends ObjectBehavior
 {
-    function let()
+    function let(Config $config)
     {
-        $this->beConstructedWith('base-path');
+        $this->beConstructedWith($config, 'base-path');
     }
 
     function it_is_initializable()
@@ -29,12 +31,17 @@ class FilenameGeneratorSpec extends ObjectBehavior
     }
 
     function it_should_return_a_nice_filename(
+        Config $config,
         Environment $env,
         FeatureNode $featureNode,
         ScenarioInterface $scenarioNode,
         TestResult $result,
-        Teardown $teardown
+        Teardown $teardown,
+        Suite $suite
     ) {
+        $config->getScreenshotFilenamePattern()->willReturn('%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%');
+        $env->getSuite()->willReturn($suite);
+        $suite->getName()->willReturn('default');
         $featureNode->getFile()->willReturn('base-path/example.feature');
         $scenarioNode->getLine()->willReturn(42);
 

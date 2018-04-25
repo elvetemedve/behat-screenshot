@@ -6,6 +6,7 @@ use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Gherkin\Node\StepNode;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 
 /**
  * This class generates a filename for the given Behat scenario step
@@ -14,6 +15,10 @@ use Behat\Gherkin\Node\StepNode;
  */
 class FilenameGenerator
 {
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * @var string
@@ -23,8 +28,9 @@ class FilenameGenerator
     /**
      * @param string $basePath
      */
-    public function __construct($basePath)
+    public function __construct(Config $config, $basePath)
     {
+        $this->config = $config;
         $this->basePath = $basePath;
     }
 
@@ -35,13 +41,13 @@ class FilenameGenerator
      */
     public function generateFileName(AfterScenarioTested $event)
     {
-        $featureNode = $event->getFeature();
-        $scenarioNode = $event->getScenario();
-        
-        $feature = $this->relativizePaths($featureNode->getFile());
-        $line = $scenarioNode->getLine();
-        $fileName = join('_', [$feature, $line]);
-        return preg_replace('/[^A-Za-z0-9\-]/', '_', mb_strtolower($fileName)) . '.png';
+        $filename = $this->config->getScreenshotFilenamePattern();
+
+        $filename = str_replace('%SUITE%', $event->getSuite()->getName(), $filename);
+        $filename = str_replace('%FEATURE_FILE_PATH%', $this->relativizePaths($event->getFeature()->getFile()), $filename);
+        $filename = str_replace('%SCENARIO_LINE_NUMBER%', $event->getScenario()->getLine(), $filename);
+
+        return preg_replace('/[^A-Za-z0-9\-]/', '_', mb_strtolower($filename)) . '.png';
     }
 
     /**

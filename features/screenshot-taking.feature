@@ -168,15 +168,15 @@ Feature: Taking screenshot
                   browser: phantomjs
 
           Bex\Behat\ScreenshotExtension:
+            screenshot_filename_pattern: %SUITE%_%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%
             image_drivers:
               local:
                 screenshot_directory: /tmp/behat-screenshot-custom/
-                screenshot_file_pattern: %SUITE%/%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%
       """
     When I run Behat
     Then I should see a failing test
-    And I should see the message "Screenshot has been taken. Open image at /tmp/behat-screenshot-custom/features_feature_feature_2.png"
-    And I should have the image file "/tmp/behat-screenshot-custom/features_feature_feature_2.png"
+    And I should see the message "Screenshot has been taken. Open image at /tmp/behat-screenshot-custom/default_features_feature_feature_2.png"
+    And I should have the image file "/tmp/behat-screenshot-custom/default_features_feature_feature_2.png"
 
   Scenario: Save screenshot using external driver
     Given I have the configuration:
