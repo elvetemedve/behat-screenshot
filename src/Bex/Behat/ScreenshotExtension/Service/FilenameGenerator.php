@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Gherkin\Node\StepNode;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
+use Bex\Behat\ScreenshotExtension\Service\PlaceholderReplacer;
 
 /**
  * This class generates a filename for the given Behat scenario step
@@ -21,17 +22,18 @@ class FilenameGenerator
     private $config;
 
     /**
-     * @var string
+     * @var PlaceholderReplacer
      */
-    private $basePath;
+    private $placeholderReplacer;
 
     /**
-     * @param string $basePath
+     * @param Config              $config
+     * @param PlaceholderReplacer $placeholderReplacer
      */
-    public function __construct(Config $config, $basePath)
+    public function __construct(Config $config, PlaceholderReplacer $placeholderReplacer)
     {
         $this->config = $config;
-        $this->basePath = $basePath;
+        $this->placeholderReplacer = $placeholderReplacer;
     }
 
     /**
@@ -43,26 +45,8 @@ class FilenameGenerator
     {
         $filename = $this->config->getScreenshotFilenamePattern();
 
-        $filename = str_replace('%SUITE%', $event->getSuite()->getName(), $filename);
-        $filename = str_replace('%FEATURE_FILE_PATH%', $this->relativizePaths($event->getFeature()->getFile()), $filename);
-        $filename = str_replace('%SCENARIO_LINE_NUMBER%', $event->getScenario()->getLine(), $filename);
+        $filename = $this->placeholderReplacer->replacePlaceholders($filename, $event);
 
         return preg_replace('/[^A-Za-z0-9\-]/', '_', mb_strtolower($filename)) . '.png';
-    }
-
-    /**
-     * Transforms path to relative.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    private function relativizePaths($path)
-    {
-        if (!$this->basePath) {
-            return $path;
-        }
-
-        return str_replace($this->basePath . DIRECTORY_SEPARATOR, '', $path);
     }
 }

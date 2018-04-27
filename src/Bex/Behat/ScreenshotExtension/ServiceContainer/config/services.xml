@@ -5,9 +5,13 @@
     <services>
         <service id="bex.screenshot_extension.config" class="Bex\Behat\ScreenshotExtension\ServiceContainer\Config" public="false" />
 
+        <service id="bex.screenshot_extension.placeholder_replacer" class="Bex\Behat\ScreenshotExtension\Service\PlaceholderReplacer" public="false">
+            <argument>%paths.base%</argument>
+        </service>
+
         <service id="bex.screenshot_extension.filename_generator" class="Bex\Behat\ScreenshotExtension\Service\FilenameGenerator" public="false">
             <argument type="service" id="bex.screenshot_extension.config" />
-            <argument>%paths.base%</argument>
+            <argument type="service" id="bex.screenshot_extension.placeholder_replacer" />
         </service>
 
         <service id="bex.screenshot_extension.indented_output" class="Bex\Behat\ScreenshotExtension\Output\IndentedOutput" public="false">
