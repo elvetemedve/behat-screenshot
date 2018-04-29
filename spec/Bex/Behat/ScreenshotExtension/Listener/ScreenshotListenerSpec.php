@@ -161,7 +161,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
             $tearDown->getWrappedObject()
         );
         $result->getResultCode()->willReturn(TestResult::FAILED);
-        $filenameGenerator->generateFileName($feature, $scenario)->willReturn('test.jpg')->shouldBeCalled();
+        $filenameGenerator->generateFileName($event)->willReturn('test.jpg')->shouldBeCalled();
         $screenshotTaker->hasScreenshot()->willReturn(true)->shouldBeCalled();
         $screenshotTaker->reset()->willReturn(null)->shouldBeCalled();
         $screenshotTaker->getImage()->willReturn(null)->shouldBeCalled();
@@ -189,7 +189,7 @@ class ScreenshotListenerSpec extends ObjectBehavior
         );
         $result->getResultCode()->willReturn(TestResult::FAILED);
         $screenshotTaker->hasScreenshot()->willReturn(false)->shouldBeCalled();
-        $filenameGenerator->generateFileName($feature, $scenario)->shouldNotBeCalled();
+        $filenameGenerator->generateFileName($event)->shouldNotBeCalled();
         $screenshotTaker->getImage()->shouldNotBeCalled();
         $screenshotUploader->upload(Argument::any(), Argument::any())->shouldNotBeCalled();
         $screenshotTaker->reset()->willReturn(null)->shouldBeCalled();

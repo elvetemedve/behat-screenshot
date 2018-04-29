@@ -154,6 +154,30 @@ Feature: Taking screenshot
     And I should see the message "Screenshot has been taken. Open image at /tmp/behat-screenshot-custom/features_feature_feature_2.png"
     And I should have the image file "/tmp/behat-screenshot-custom/features_feature_feature_2.png"
 
+  Scenario: Save screenshot with custom file pattern
+    Given I have the configuration:
+      """
+      default:
+        extensions:
+          Behat\MinkExtension:
+            base_url: 'http://localhost:8080'
+            sessions:
+              default:
+                selenium2:
+                  wd_host: http://localhost:4444/wd/hub
+                  browser: phantomjs
+
+          Bex\Behat\ScreenshotExtension:
+            screenshot_filename_pattern: %SUITE_NAME%_%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%
+            image_drivers:
+              local:
+                screenshot_directory: /tmp/behat-screenshot-custom/
+      """
+    When I run Behat
+    Then I should see a failing test
+    And I should see the message "Screenshot has been taken. Open image at /tmp/behat-screenshot-custom/default_features_feature_feature_2.png"
+    And I should have the image file "/tmp/behat-screenshot-custom/default_features_feature_feature_2.png"
+
   Scenario: Save screenshot using external driver
     Given I have the configuration:
       """

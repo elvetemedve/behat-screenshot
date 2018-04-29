@@ -2,9 +2,12 @@
 
 namespace Bex\Behat\ScreenshotExtension\Service;
 
+use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioInterface;
 use Behat\Gherkin\Node\StepNode;
+use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
+use Bex\Behat\ScreenshotExtension\Service\PlaceholderReplacer;
 
 /**
  * This class generates a filename for the given Behat scenario step
@@ -13,47 +16,37 @@ use Behat\Gherkin\Node\StepNode;
  */
 class FilenameGenerator
 {
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
-     * @var string
+     * @var PlaceholderReplacer
      */
-    private $basePath;
+    private $placeholderReplacer;
 
     /**
-     * @param string $basePath
+     * @param Config              $config
+     * @param PlaceholderReplacer $placeholderReplacer
      */
-    public function __construct($basePath)
+    public function __construct(Config $config, PlaceholderReplacer $placeholderReplacer)
     {
-        $this->basePath = $basePath;
+        $this->config = $config;
+        $this->placeholderReplacer = $placeholderReplacer;
     }
 
     /**
-     * @param  FeatureNode  $featureNode
-     * @param  ScenarioInterface $scenarioNode
+     * @param  AfterScenarioTested $event
      *
      * @return string
      */
-    public function generateFileName(FeatureNode $featureNode, ScenarioInterface $scenarioNode)
+    public function generateFileName(AfterScenarioTested $event)
     {
-        $feature = $this->relativizePaths($featureNode->getFile());
-        $line = $scenarioNode->getLine();
-        $fileName = join('_', [$feature, $line]);
-        return preg_replace('/[^A-Za-z0-9\-]/', '_', mb_strtolower($fileName)) . '.png';
-    }
+        $filename = $this->config->getScreenshotFilenamePattern();
 
-    /**
-     * Transforms path to relative.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    private function relativizePaths($path)
-    {
-        if (!$this->basePath) {
-            return $path;
-        }
+        $filename = $this->placeholderReplacer->replaceAll($filename, $event);
 
-        return str_replace($this->basePath . DIRECTORY_SEPARATOR, '', $path);
+        return preg_replace('/[^A-Za-z0-9\-]/', '_', mb_strtolower($filename)) . '.png';
     }
 }
