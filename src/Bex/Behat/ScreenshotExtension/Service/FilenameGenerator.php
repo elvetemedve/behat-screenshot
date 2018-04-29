@@ -45,7 +45,7 @@ class FilenameGenerator
     {
         $filename = $this->config->getScreenshotFilenamePattern();
 
-        $filename = $this->placeholderReplacer->replacePlaceholders($filename, $event);
+        $filename = $this->placeholderReplacer->replaceAll($filename, $event);
 
         return preg_replace('/[^A-Za-z0-9\-]/', '_', mb_strtolower($filename)) . '.png';
     }

@@ -49,7 +49,7 @@ class FilenameGeneratorSpec extends ObjectBehavior
 
         $filePattern = '%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%';
         $config->getScreenshotFilenamePattern()->willReturn($filePattern);
-        $placeholderReplacer->replacePlaceholders($filePattern, $event)->willReturn('example_feature_42');
+        $placeholderReplacer->replaceAll($filePattern, $event)->willReturn('example_feature_42');
 
         $this->generateFileName($event)->shouldReturn('example_feature_42.png');
     }

@@ -7,16 +7,16 @@ use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 class PlaceholderReplacer
 {
     /**
-     * @var string
+     * @var array
      */
-    private $basePath;
+    private $placeholders;
     
     /**
-     * @param string $basePath
+     * @param array $placeholders
      */
-    public function __construct($basePath)
+    public function __construct(array $placeholders = [])
     {
-        $this->basePath = $basePath;
+        $this->placeholders = $placeholders;
     }
 
     /**
@@ -25,34 +25,14 @@ class PlaceholderReplacer
      *
      * @return string
      */
-    public function replacePlaceholders($text, AfterScenarioTested $event)
+    public function replaceAll($text, AfterScenarioTested $event)
     {
-        $map = [
-          '%SUITE%' => $event->getSuite()->getName(),
-          '%FEATURE_FILE_PATH%' => $this->relativizePaths($event->getFeature()->getFile()),
-          '%SCENARIO_LINE_NUMBER%' => $event->getScenario()->getLine()
-        ];
-
-        foreach ($map as $key => $value) {
-            $text = str_replace($key, $value, $text);
+        foreach ($this->placeholders as $placeholder) {
+            if (strpos($text, $placeholder->getKey()) !== false) {
+                $text = str_replace($placeholder->getKey(), $placeholder->getValue($event), $text);
+            }
         }
 
         return $text;
-    }
-
-    /**
-     * Transforms path to relative.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    private function relativizePaths($path)
-    {
-        if (!$this->basePath) {
-            return $path;
-        }
-
-        return str_replace($this->basePath . DIRECTORY_SEPARATOR, '', $path);
     }
 }

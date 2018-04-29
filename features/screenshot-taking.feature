@@ -168,7 +168,7 @@ Feature: Taking screenshot
                   browser: phantomjs
 
           Bex\Behat\ScreenshotExtension:
-            screenshot_filename_pattern: %SUITE%_%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%
+            screenshot_filename_pattern: %SUITE_NAME%_%FEATURE_FILE_PATH%_%SCENARIO_LINE_NUMBER%
             image_drivers:
               local:
                 screenshot_directory: /tmp/behat-screenshot-custom/
