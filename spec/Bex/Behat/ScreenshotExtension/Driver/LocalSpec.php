@@ -13,12 +13,13 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class LocalSpec extends ObjectBehavior
 {
-    function let(Filesystem $filesystem, Finder $finder, \finfo $fileInfo)
+    function let(Filesystem $filesystem, Finder $finder, \finfo $fileInfo, ContainerBuilder $container)
     {
         $this->beConstructedWith($filesystem, $finder, $fileInfo);
 
         $this->initializeFinderStub($finder);
         $this->initializeFileInfoStub($fileInfo);
+        $this->initializeContainerStub($container);
     }
 
     function it_cleans_up_screenshot_directory_when_switch_is_on(
@@ -106,6 +107,22 @@ class LocalSpec extends ObjectBehavior
         $filesystem->remove($images)->shouldBeCalled();
 
         $this->load($container, $config);
+    }
+
+    function it_uses_base_path_for_screenshot_directory(ContainerBuilder $container, Filesystem $filesystem)
+    {
+        $config = $this->getDefaultConfig();
+        $config[Local::CONFIG_PARAM_SCREENSHOT_DIRECTORY] = '%paths.base%/path/to/screenshots';
+
+        $filesystem->exists('/my/working/directory/path/to/screenshots')->willReturn(true);
+        $filesystem->dumpFile('/my/working/directory/path/to/screenshots/imagename', 'binaryimage')->shouldBeCalled();
+        $this->load($container, $config);
+        $this->upload('binaryimage', 'imagename');
+    }
+
+    private function initializeContainerStub(ContainerBuilder $container)
+    {
+        $container->getParameter('paths.base')->willReturn('/my/working/directory');
     }
 
     private function initializeFinderStub(Finder $finder)

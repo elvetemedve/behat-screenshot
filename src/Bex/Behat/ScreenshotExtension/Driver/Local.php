@@ -86,7 +86,11 @@ class Local implements ImageDriverInterface
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        $this->screenshotDirectory = $config[self::CONFIG_PARAM_SCREENSHOT_DIRECTORY];
+        $this->screenshotDirectory = str_replace(
+            '%paths.base%',
+            $container->getParameter('paths.base'),
+            $config[self::CONFIG_PARAM_SCREENSHOT_DIRECTORY]
+        );
 
         if ($config[self::CONFIG_PARAM_CLEAR_SCREENSHOT_DIRECTORY]) {
             $this->fileInfo = $this->fileInfo ?: new \finfo();

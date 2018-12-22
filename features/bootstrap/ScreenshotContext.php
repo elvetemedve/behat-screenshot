@@ -118,7 +118,10 @@ class ScreenshotContext implements SnippetAcceptingContext
      */
     private function substituteParameters($text)
     {
-        return str_replace('%temp-dir%', sys_get_temp_dir(), $text);
+        $text = str_replace('%temp-dir%', sys_get_temp_dir(), $text);
+        $text = str_replace('%working-dir%', $this->testRunnerContext->getWorkingDirectory(), $text);
+
+        return $text;
     }
 
     /**
