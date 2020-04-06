@@ -25,8 +25,8 @@
         "behat/behat": "^3.0.0",
         "behat/mink-extension": "^2.0.0",
         "bex/behat-extension-driver-locator": "^1.0.2",
-        "symfony/filesystem": "^2.7|^3.0|^4.0",
-        "symfony/finder": "^2.7|^3.0|^4.0"
+        "symfony/filesystem": "^2.7|^3.0|^4.0|^5.0",
+        "symfony/finder": "^2.7|^3.0|^4.0|^5.0"
     },
     "require-dev": {
         "bex/behat-test-runner": "^1.2.2",
