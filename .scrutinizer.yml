@@ -28,7 +28,7 @@ filter:
 build:
     environment:
         php:
-            version: 5.4
+            version: 5.5
             ini:
                 'always_populate_raw_post_data': '-1'
 
