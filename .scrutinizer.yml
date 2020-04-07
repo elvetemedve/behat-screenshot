@@ -28,7 +28,7 @@ filter:
 build:
     environment:
         php:
-            version: 5.4
+            version: 5.5
             ini:
                 'always_populate_raw_post_data': '-1'
 
@@ -36,8 +36,6 @@ build:
         override:
             - bin/phpspec run --no-interaction --format=pretty
             - bin/behat --no-interaction --no-snippets --stop-on-failure --format=pretty
-        after:
-            - SCRUTINIZER_START_TIME=$(cat /tmp/build-start-time.txt) sh -c 'curl -sS https://gist.githubusercontent.com/tonypiper/fd3cf9a67b71d4e3928c/raw/152f1d873f98ff4256ca8bc3041443eae7c890b4/keenio-logger.php | php'
 
     dependencies:
         before:
@@ -47,7 +45,7 @@ build:
             - sed -i 's/extension="imagick.so"//g' `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
         override:
-            - { command: 'composer install --no-interaction --prefer-source', idle_timeout: 600 }
+            - { command: 'composer install --no-interaction', idle_timeout: 600 }
 
     cache:
         directories: [ bin/, ~/.composer/cache ]

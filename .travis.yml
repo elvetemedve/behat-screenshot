@@ -2,10 +2,10 @@ language: php
 
 sudo: false
 
-php: [5.6, 7.0, 7.1, 7.2]
-
+php: [5.6, 7.0, 7.1, 7.2, 7.3, 7.4, nightly]
 matrix:
-  fast_finish: true
+  allow_failures:
+    - php: nightly
 
 cache:
   directories:
@@ -18,7 +18,7 @@ before_install:
   - yes | pecl install imagick
 
 install:
-  - composer install --no-interaction --prefer-source
+  - composer install --no-interaction
 
 before_script:
   - sed -i 's/extension="imagick.so"//g' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
