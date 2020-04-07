@@ -18,7 +18,7 @@ before_install:
   - yes | pecl install imagick
 
 install:
-  - composer install --no-interaction --prefer-source
+  - composer install --no-interaction
 
 before_script:
   - sed -i 's/extension="imagick.so"//g' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
