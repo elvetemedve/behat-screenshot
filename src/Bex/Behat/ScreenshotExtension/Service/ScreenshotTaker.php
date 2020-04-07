@@ -50,6 +50,9 @@ class ScreenshotTaker
     public function takeScreenshot()
     {
         try {
+            if (!$this->mink->getSession()->isStarted()) {
+                return;
+            }
             $this->screenshots[] = $this->mink->getSession()->getScreenshot();
         } catch (UnsupportedDriverActionException $e) {
             return;
