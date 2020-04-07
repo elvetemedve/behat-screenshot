@@ -39,6 +39,15 @@ class ScreenshotTakerSpec extends ObjectBehavior
         $this->takeScreenshot();
     }
 
+    function it_does_not_take_screenshot_when_session_is_not_started(Session $session)
+    {
+        $session->isStarted()->willReturn(false);
+
+        $session->getScreenshot()->shouldNotBeCalled();
+
+        $this->takeScreenshot();
+    }
+
     function it_reports_errors_on_screen(OutputInterface $output, Session $session)
     {
         $output->writeln(Argument::cetera())->shouldBeCalled();
@@ -72,6 +81,7 @@ class ScreenshotTakerSpec extends ObjectBehavior
 
     private function initializeSessionStub(Session $session)
     {
+        $session->isStarted()->willReturn(true);
         $session->getScreenshot()->willReturn('binary-image');
     }
 }
