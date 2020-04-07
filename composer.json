@@ -22,7 +22,7 @@
     ],
     "require": {
         "php": ">=5.4",
-        "behat/behat": "^3.0.0",
+        "behat/behat": "^3.0.0 <3.6",
         "behat/mink-extension": "^2.0.0",
         "bex/behat-extension-driver-locator": "^1.0.2",
         "symfony/filesystem": "^2.7|^3.0|^4.0",
