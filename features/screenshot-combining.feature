@@ -41,7 +41,7 @@ Feature: Taking screenshot
     When I run Behat
     Then I should see the message "Imagemagick PHP extension is required, but not installed."
 
-  Scenario: It creates a single screenshot of the faild step if the screenshot_taking_mode is "failed_steps" (default)
+  Scenario: It creates a single screenshot of the failed step if the screenshot_taking_mode is "failed_steps" (default)
     Given I have a web server running on host "localhost" and port "8080"
     And I have the file "index.html" in document root:
       """
