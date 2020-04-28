@@ -28,7 +28,7 @@ final class ScreenshotExtension implements Extension
     private $driverNodeBuilder;
 
     /**
-     * Constuctor: init extension
+     * Constructor: init extension
      */
     public function __construct()
     {
