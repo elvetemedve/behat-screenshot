@@ -5,6 +5,8 @@ namespace Bex\Behat\ScreenshotExtension\Service;
 use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploaderEvent;
 
 class ScreenshotUploader
 {
@@ -19,13 +21,20 @@ class ScreenshotUploader
     private $config;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param OutputInterface $output
      * @param Config          $config
+     * @param EventDispatcherInterface $eventDispatcher;
      */
-    public function __construct(OutputInterface $output, Config $config)
+    public function __construct(OutputInterface $output, Config $config, EventDispatcherInterface $eventDispatcher)
     {
         $this->output = $output;
         $this->config = $config;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -36,6 +45,10 @@ class ScreenshotUploader
     {
         foreach ($this->config->getImageDrivers() as $imageDriver) {
             $imageUrl = $imageDriver->upload($screenshot, $fileName);
+
+            // Dispatch an event for file upload.
+            $this->eventDispatcher->dispatch(new ScreenshotUploaderEvent($imageUrl), ScreenshotUploaderEvent::UPLOAD);
+
             $this->printImageLocation($imageUrl);
         }
     }
