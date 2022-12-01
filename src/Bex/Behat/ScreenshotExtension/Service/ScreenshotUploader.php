@@ -6,7 +6,7 @@ use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploaderEvent;
+use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploadCompleteEvent;
 
 class ScreenshotUploader
 {
@@ -47,7 +47,7 @@ class ScreenshotUploader
             $imageUrl = $imageDriver->upload($screenshot, $fileName);
 
             // Dispatch an event for file upload.
-            $this->eventDispatcher->dispatch(new ScreenshotUploaderEvent($imageUrl), ScreenshotUploaderEvent::UPLOAD);
+            $this->eventDispatcher->dispatch(new ScreenshotUploadCompleteEvent($imageUrl), ScreenshotUploadCompleteEvent::NAME);
 
             $this->printImageLocation($imageUrl);
         }

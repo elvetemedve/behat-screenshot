@@ -6,9 +6,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Dispatches an event when screenshots are uploaded.
  */
-class ScreenshotUploaderEvent extends Event
+class ScreenshotUploadCompleteEvent extends Event
 {
-    public const UPLOAD = 'screenshot-uploader-upload';
+    const NAME = 'screenshot.uploader.upload_complete';
 
     protected $filename = '';
 
