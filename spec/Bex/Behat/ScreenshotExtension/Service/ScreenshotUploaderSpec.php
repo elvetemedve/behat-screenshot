@@ -7,12 +7,13 @@ use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ScreenshotUploaderSpec extends ObjectBehavior
 {
-    function let(OutputInterface $output, Config $config, Local $localDriver)
+    function let(OutputInterface $output, Config $config, Local $localDriver, EventDispatcherInterface $dispatcher)
     {
-        $this->beConstructedWith($output, $config);
+        $this->beConstructedWith($output, $config, $dispatcher);
 
         $this->initializeOutputStub($output);
         $this->initializeConfigStub($config, $localDriver);
