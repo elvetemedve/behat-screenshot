@@ -6,7 +6,6 @@ use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploadCompleteEvent;
 
 class ScreenshotUploader
 {
