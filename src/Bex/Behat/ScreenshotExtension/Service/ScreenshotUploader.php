@@ -31,8 +31,8 @@ class ScreenshotUploader
      */
     public function __construct(OutputInterface $output, Config $config)
     {
-      $this->output = $output;
-      $this->config = $config;
+        $this->output = $output;
+        $this->config = $config;
     }
 
     /**
