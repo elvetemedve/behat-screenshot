@@ -3,8 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="event_dispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="true"/>
-
         <service id="bex.screenshot_extension.config" class="Bex\Behat\ScreenshotExtension\ServiceContainer\Config" public="false" />
 
         <service id="bex.screenshot_extension.filename_generator" class="Bex\Behat\ScreenshotExtension\Service\FilenameGenerator" public="false">
@@ -22,9 +20,9 @@
         </service>
 
         <service id="bex.screenshot_extension.screenshot_uploader" class="Bex\Behat\ScreenshotExtension\Service\ScreenshotUploader" public="false">
+          <tag name="screenshot.service" priority="0"/>
             <argument type="service" id="bex.screenshot_extension.indented_output" />
             <argument type="service" id="bex.screenshot_extension.config" />
-            <argument type="service" id="event_dispatcher" />
         </service>
 
         <!-- event listener -->

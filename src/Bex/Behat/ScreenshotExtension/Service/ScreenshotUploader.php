@@ -6,7 +6,6 @@ use Bex\Behat\ScreenshotExtension\Driver\ImageDriverInterface;
 use Bex\Behat\ScreenshotExtension\ServiceContainer\Config;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Bex\Behat\ScreenshotExtension\Event\ScreenshotUploadCompleteEvent;
 
 class ScreenshotUploader
 {
@@ -21,20 +20,29 @@ class ScreenshotUploader
     private $config;
 
     /**
-     * @var EventDispatcherInterface
+     * @var array
+     *   Used to statically store the list of files uploaded.
      */
-    private $eventDispatcher;
+    private static $imageUrls;
 
     /**
      * @param OutputInterface $output
      * @param Config          $config
-     * @param EventDispatcherInterface $eventDispatcher;
      */
-    public function __construct(OutputInterface $output, Config $config, EventDispatcherInterface $eventDispatcher)
+    public function __construct(OutputInterface $output, Config $config)
     {
         $this->output = $output;
         $this->config = $config;
-        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * Return a list of uploaded files.
+     *
+     * @return array
+     *   The list of image Urls.
+     */
+    public function getImages() {
+      return static::$imageUrls;
     }
 
     /**
@@ -43,11 +51,11 @@ class ScreenshotUploader
      */
     public function upload($screenshot, $fileName = 'failure.png')
     {
+        static::$imageUrls = [];
         foreach ($this->config->getImageDrivers() as $imageDriver) {
             $imageUrl = $imageDriver->upload($screenshot, $fileName);
 
-            // Dispatch an event for file upload.
-            $this->eventDispatcher->dispatch(new ScreenshotUploadCompleteEvent($imageUrl), ScreenshotUploadCompleteEvent::NAME);
+            static::$imageUrls[] = $imageUrl;
 
             $this->printImageLocation($imageUrl);
         }
