@@ -51,6 +51,7 @@ class ScreenshotUploader
      */
     public function upload($screenshot, $fileName = 'failure.png')
     {
+        static::$imageUrls = [];
         foreach ($this->config->getImageDrivers() as $imageDriver) {
             $imageUrl = $imageDriver->upload($screenshot, $fileName);
 
